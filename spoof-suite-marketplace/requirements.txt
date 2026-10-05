@@ -4,6 +4,7 @@ flask-sqlalchemy>=3.0.0
 flask-login>=0.6.0
 flask-mail>=0.9.1
 flask-migrate>=4.0.0
+psycopg[binary]>=3.2,<4
 werkzeug>=2.3.0
 itsdangerous>=2.1.0
 faker>=19.0.0

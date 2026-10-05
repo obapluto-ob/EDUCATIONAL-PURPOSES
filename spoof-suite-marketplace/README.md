@@ -64,7 +64,9 @@ The application uses environment variables for configuration. Copy `.env.example
 - `SECRET_KEY`: Your application secret key
 - `MAIL_USERNAME`: Email for notifications
 - `MAIL_PASSWORD`: Email password/app password
-- `DATABASE_URL`: Database connection string
+- `DATABASE_URL`: Optional database connection string. Local development defaults to SQLite. For Render, create a PostgreSQL database and set this variable to its internal connection URL in the web service's environment. The app supports Render's `postgres://` and standard `postgresql://` URL formats.
+
+For Render deployments, install dependencies with `pip install -r requirements.txt` and run `flask db upgrade` as the service's pre-deploy command after setting `DATABASE_URL`. The PostgreSQL database must be reachable by the service for migrations to succeed.
 
 ## Project Structure
 

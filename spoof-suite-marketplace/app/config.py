@@ -14,6 +14,19 @@ os.makedirs(INSTANCE_DIR, exist_ok=True)
 DEFAULT_DATABASE_PATH = os.path.join(INSTANCE_DIR, 'site.db')
 
 
+def get_database_uri():
+    database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        return f'sqlite:///{DEFAULT_DATABASE_PATH}'
+
+    if database_url.startswith('postgres://'):
+        return 'postgresql+psycopg://' + database_url[len('postgres://'):]
+    if database_url.startswith('postgresql://'):
+        return database_url.replace('://', '+psycopg://', 1)
+
+    return database_url
+
+
 class Config:
     """Base configuration class."""
     
@@ -21,8 +34,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-change-in-production'
     
     # Database
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        f'sqlite:///{DEFAULT_DATABASE_PATH}'
+    SQLALCHEMY_DATABASE_URI = get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Email Configuration
