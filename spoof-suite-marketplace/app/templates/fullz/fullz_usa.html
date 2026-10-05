@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>USA FULLZ Generator</title>
+    <style>
+        body {
+            background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        @media (max-width: 600px) {
+            body, html {
+                background: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=') no-repeat center center fixed !important;
+                background-size: cover !important;
+                background-color: #1e293b !important;
+                min-height: 100vh !important;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 18px;
+                border: 2px solid #223055;
+                border-radius: 10px;
+                background: rgba(30,41,59,0.92) !important;
+                box-shadow: 0 2px 8px #0002;
+                padding: 8px 0;
+            }
+            td {
+                text-align: left !important;
+                padding: 12px 14px !important;
+                min-width: unset !important;
+                font-size: 13px !important;
+                border: none;
+                border-bottom: 1px solid #223055;
+                position: relative;
+                color: #bee3f8 !important;
+                background: transparent !important;
+            }
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #ffd700;
+                display: block;
+                margin-bottom: 2px;
+                font-size: 12px;
+            }
+        }
+        .container {
+            max-width: 900px;
+            margin: 32px auto;
+            background: rgba(30,41,59,0.65); /* More transparent */
+            border-radius: 16px;
+            padding: 24px 0 24px 24px;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            background: transparent !important;
+            margin-left: 0;
+        }
+        th, td {
+            padding: 4px 2px; /* Reduce padding */
+            font-size: 11px;  /* Smaller font */
+            border-bottom: 1px solid #2b6cb0;
+            border-right: 1px solid #2b6cb0;
+            background: transparent !important;
+            max-width: 120px; /* Limit column width */
+            word-break: break-word;
+            white-space: normal;
+        }
+        th.amount-cell, td.amount-cell {
+            min-width: 50px; /* Reduce min width for amount cells */
+            font-size: 10px;
+            padding: 3px 2px;
+        }
+        td.amount-cell ul {
+            padding-left: 12px;
+            margin: 0;
+        }
+        @media (max-width: 700px) {
+            th, td {
+                font-size: 9px;
+                padding: 2px 1px;
+                max-width: 80px;
+            }
+            th.amount-cell, td.amount-cell {
+                min-width: 30px;
+                font-size: 8px;
+                padding: 2px 1px;
+            }
+        }
+        th {
+            background: rgba(190,227,248,0.18) !important;
+            color: #38a169;
+        }
+        tr { background: rgba(255,255,255,0.04); }
+        tr:hover { background: rgba(56,161,105,0.13); }
+        .amount-cell {
+            text-align: right;
+            font-size: 12px;
+            min-width: 70px;
+            font-weight: bold;
+            background: transparent !important;
+            color: #bee3f8;
+            font-family: monospace, 'Fira Mono', 'Consolas', 'Menlo', 'Courier', Arial, sans-serif;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #2b6cb0;
+            border-right: 1px solid #2b6cb0;
+        }
+        .amount-cell:last-child {
+            border-right: none;
+        }
+        .pagination-btn {
+            display: inline-block;
+            background: #2b6cb0;
+            color: #fff;
+            border-radius: 24px;
+            font-size: 15px;
+            padding: 8px 24px;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 0 8px;
+            box-shadow: 0 2px 8px rgba(44,82,130,0.10);
+            border: none;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .pagination-btn:hover {
+            background: #38a169;
+            box-shadow: 0 4px 12px rgba(44,82,130,0.18);
+            color: #fff;
+        }
+        .pagination-info {
+            color: #bee3f8;
+            font-weight: bold;
+            font-size: 15px;
+            margin: 0 12px;
+            vertical-align: middle;
+        }
+        .btn-buy {
+            background: #38a169 !important;
+            color: #fff !important;
+            font-weight: bold;
+        }
+        .btn-buy:hover {
+            background: #276749 !important;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: absolute; top: 24px; left: 24px; z-index: 10; display: flex; gap: 10px;">
+        <a href="/" class="btn btn-back" style="
+            background: #38a169;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 15px;
+            padding: 8px 18px;
+            font-weight: bold;
+            text-decoration: none;
+        ">&larr; Back to Dashboard</a>
+        <a href="{{ url_for('fullz.history') }}" class="btn btn-back" style="
+            background: #2b6cb0;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 15px;
+            padding: 8px 18px;
+            font-weight: bold;
+            text-decoration: none;
+        ">History</a>
+    </div>
+    <!-- User Profile & Wallet Section (top right, styled like debit.html) -->
+    <div
+      style="position: absolute; top: 18px; right: 18px; z-index: 20; display: flex; align-items: center; gap: 18px; color: #fff; background: rgba(0,0,0,0.14); border-radius: 10px; padding: 10px 16px; max-width: 340px; font-size: 15px; text-align: left; box-shadow: 0 2px 8px rgba(44,82,130,0.10);">
+      <div>
+        <span style="font-weight:600;">{{ username }}</span>
+        <span style="font-size:13px; color:#bee3f8;">(User)</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="
+          background: linear-gradient(90deg, #23272f 60%, #38a169 100%);
+          color: #bee3f8;
+          padding: 2px 7px;
+          border-radius: 10px;
+          font-size: 12px;
+          font-weight: 600;
+          box-shadow: 0 1px 3px rgba(44,82,130,0.10);
+          letter-spacing: 0.3px;
+          border: 1px solid #38a169;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          text-shadow: 1px 1px 2px #222;
+          font-family: 'Segoe UI', Arial, sans-serif;
+        ">
+          <span style="text-transform: uppercase;">Balance:</span>
+          <span style="margin-left:3px; color:#fff; background:rgba(56,161,105,0.18); padding:1px 5px; border-radius:6px; font-size:12px; font-weight:600;">
+            ${{ "%.2f"|format(user_balance) }}
+          </span>
+        </span>
+        <a href="/payments/" class="btn btn-buy" style="padding:5px 10px; font-size:12px; border-radius:5px; background:#38a169; color:#fff; font-weight:bold;">Add Funds</a>
+      </div>
+    </div>
+
+    <div class="container" style="background: transparent; max-width:900px; margin:32px auto; border-radius:16px; padding:24px 0 24px 24px; text-align:left;">
+        <h2 style="margin-top:60px;">USA FULLZ</h2>
+        <div style="background:rgba(30,41,59,0.65); color:#bee3f8; border-radius:10px; padding:16px 18px; margin-bottom:18px; box-shadow:0 2px 8px rgba(44,82,130,0.10); font-size:14px;">
+            <strong style="color:#38a169; font-size:16px;">FRESH LOGS AVAILABLE FOR PURCHACE!!!</strong>
+            <br>
+            <span>
+                Each USA FULLZ log comes with complete, valid information ready for your needs. You can use these FULLZ to initiate ACH transfers to any USA drop, pay bills for USA accounts, or create any type of check—whether it's money order, checkbook, or wire check. All info is 100% validated and guaranteed to work.
+            </span>
+            <br><br>
+            <span style="color:#e53e3e; font-weight:bold;">
+                <strong>Important:</strong> After every purchase, the FULLZ is replaced after 7 minutes.<br>
+                <span style="font-size:13px;">
+                    Please check and use your purchased info as soon as possible. If you find any invalid details, contact support immediately for a replacement or refund.<br>
+                    <span style="color:#e53e3e; font-weight:bold;">Guess work is not advised—make sure you know what you are doing before using the FULLZ!</span>
+                </span>
+            </span>
+            <br><br>
+            <span style="color:#90cdf4;">
+                Be courageous and make the most of your FULLZ! For any help, our support team is here for you.
+            </span>
+        </div>
+        <div style="background:rgba(56,161,105,0.13); color:#bee3f8; border-radius:8px; padding:10px 16px; margin-bottom:12px; font-size:13px; font-weight:600;">
+            <span style="color:#38a169;">Note:</span>
+            If your balance is enough, you will see a <span style="color:#38a169;">Buy</span> button to purchase logs. If your balance is too low, a <span style="color:#e53e3e;">Top Up</span> button will appear instead, guiding you to add funds before you can buy.
+        </div>
+        <table style="margin-left:0; width:100%;">
+            <tr>
+                <th class="amount-cell">#</th>
+                <th class="amount-cell">Log ID</th>
+                <th class="amount-cell">Name</th>
+                <th class="amount-cell">Country</th>
+                <th class="amount-cell">DOB</th>
+                <th class="amount-cell">SSN</th>
+                <th class="amount-cell">Address</th>
+                <th class="amount-cell">ZIP</th>
+                <th class="amount-cell">State</th>
+                <th class="amount-cell">City</th>
+                <th class="amount-cell">Phone</th>
+                <th class="amount-cell">Email</th>
+                <th class="amount-cell">Driver’s License</th>
+                <th class="amount-cell">Bank Account</th>
+                <th class="amount-cell">Routing Number</th>
+                <th class="amount-cell">Bank Name</th>
+                <th class="amount-cell">Bank Username</th>
+                <th class="amount-cell">Bank Password</th>
+                <th class="amount-cell">Credit Report</th>
+                <th class="amount-cell">2FA SMS</th>
+                <th class="amount-cell">Security Questions</th>
+                <th class="amount-cell">Balance</th>
+                <th class="amount-cell">Price</th>
+                <th class="amount-cell">Buy</th>
+            </tr>
+            {% for fullz in fullz_list[:5] %}
+            <tr>
+                <td class="amount-cell" data-label="#">{{ (page - 1) * 5 + loop.index }}</td>
+                <td class="amount-cell" data-label="Log ID">{{ fullz.log_id }}</td>
+                <td class="amount-cell" data-label="Name">{{ fullz.name }}</td>
+                <td class="amount-cell" data-label="Country">
+                    <img src="https://flagcdn.com/us.svg" alt="USA" style="width:18px;height:12px;vertical-align:middle;margin-right:4px;border-radius:2px;border:1px solid #223055;">
+                    USA
+                </td>
+                <td class="amount-cell" data-label="DOB">{{ fullz.dob }}</td>
+                <td class="amount-cell" data-label="SSN">****{{ fullz.ssn[-4:] }}</td>
+                <td class="amount-cell" data-label="Address">{{ fullz.address }}</td>
+                <td class="amount-cell" data-label="ZIP">{{ fullz.zip }}</td>
+                <td class="amount-cell" data-label="State">{{ fullz.state }}</td>
+                <td class="amount-cell" data-label="City">{{ fullz.city }}</td>
+                <td class="amount-cell" data-label="Phone">****{{ fullz.phone[-4:] }}</td>
+                <td class="amount-cell" data-label="Email">
+                    {{ fullz.email.split('@')[0][:2] }}****@{{ fullz.email.split('@')[1] }}
+                </td>
+                <td class="amount-cell" data-label="Driver’s License">***{{ fullz.dl[-3:] }}</td>
+                <td class="amount-cell" data-label="Bank Account">****{{ fullz.bank_acc[-4:] }}</td>
+                <td class="amount-cell" data-label="Routing Number">{{ fullz.routing }}</td>
+                <td class="amount-cell" data-label="Bank Name">{{ fullz.bank_name }}</td>
+                <td class="amount-cell" data-label="Bank Username">
+                    {{ fullz.bank_user.split(' ')[0] }}****
+                </td>
+                <td class="amount-cell" data-label="Bank Password">********</td>
+                <td class="amount-cell" data-label="Credit Report">{{ fullz.credit_report }}</td>
+                <td class="amount-cell" data-label="2FA SMS">****{{ fullz.twofa_sms[-2:] }}</td>
+                <td class="amount-cell" data-label="Security Questions">
+                    <span style="letter-spacing:2px;">********</span>
+                </td>
+                <td class="amount-cell" data-label="Balance">${{ "%.2f"|format(fullz.balance) }}</td>
+                <td class="amount-cell" data-label="Price">${{ "%.2f"|format(fullz.price) }}</td>
+                <td class="amount-cell" data-label="Buy">
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                        {% if user_balance >= fullz.price %}
+                            <form action="{{ url_for('fullz.buy_fullz') }}" method="post" style="margin:0;">
+                                <input type="hidden" name="log_id" value="{{ fullz.log_id }}">
+                                <button type="submit"
+                                        class="btn btn-buy"
+                                        style="padding:4px 14px; font-size:12px; border-radius:7px; box-shadow:0 1px 4px rgba(44,82,130,0.10); font-weight:600;">
+                                    Buy
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="/payments/"
+                               class="btn"
+                               style="padding:4px 14px; font-size:12px; border-radius:7px; background:#e53e3e; color:#fff; font-weight:600; box-shadow:0 1px 4px rgba(44,82,130,0.10); text-decoration:none;">
+                                Top Up
+                            </a>
+                            <span style="color:#e53e3e; font-size:10px; margin-top:2px; font-weight:600;">
+                                Insufficient funds
+                            </span>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="text-align:center; margin-top:18px;">
+            {% if page > 1 %}
+                <a href="{{ url_for('fullz.fullz_usa', page=page-1) }}" class="pagination-btn">&larr; Prev</a>
+            {% endif %}
+            <span class="pagination-info">Page {{ page }} of {{ total_pages }}</span>
+            {% if page < total_pages %}
+                <a href="{{ url_for('fullz.fullz_usa', page=page+1) }}" class="pagination-btn">Next &rarr;</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

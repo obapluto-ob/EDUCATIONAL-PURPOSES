@@ -1,0 +1,177 @@
+{
+  "476173": {
+    "bank": "American Express",
+    "type": "credit",
+    "brand": "amex",
+    "level": "Gold",
+    "country": "USA"
+  },
+  "378282": {
+    "bank": "American Express",
+    "type": "credit",
+    "brand": "amex",
+    "level": "Platinum",
+    "country": "USA"
+  },
+  "371449": {
+    "bank": "American Express",
+    "type": "credit",
+    "brand": "amex",
+    "level": "Corporate",
+    "country": "USA"
+  },
+  "343434": {
+    "bank": "American Express",
+    "type": "credit",
+    "brand": "amex",
+    "level": "Business",
+    "country": "USA"
+  },
+  "601111": {
+    "bank": "Discover",
+    "type": "credit",
+    "brand": "discover",
+    "level": "Standard",
+    "country": "USA"
+  },
+  "644564": {
+    "bank": "Discover",
+    "type": "credit",
+    "brand": "discover",
+    "level": "Cashback",
+    "country": "USA"
+  },
+  "520000": {
+    "bank": "Commonwealth Bank",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "Gold",
+    "country": "Australia"
+  },
+  "540988": {
+    "bank": "Santander",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "Gold",
+    "country": "UK"
+  },
+  "676770": {
+    "bank": "Maestro",
+    "type": "debit",
+    "brand": "maestro",
+    "level": "Standard",
+    "country": "UK"
+  },
+  "450875": {
+    "bank": "BMO",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Platinum",
+    "country": "Canada"
+  },
+  "540333": {
+    "bank": "TD Canada",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "Gold",
+    "country": "Canada"
+  },
+  "492901": {
+    "bank": "Deutsche Bank",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Gold",
+    "country": "Germany"
+  },
+  "547580": {
+    "bank": "BNP Paribas",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "World",
+    "country": "France"
+  },
+  "450903": {
+    "bank": "ING",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Classic",
+    "country": "Netherlands"
+  },
+  "450000": {
+    "bank": "ANZ",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Platinum",
+    "country": "Australia"
+  },
+  "456789": {
+    "bank": "ICBC",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Gold",
+    "country": "China"
+  },
+  "540123": {
+    "bank": "Mitsubishi UFJ",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "Platinum",
+    "country": "Japan"
+  },
+  "414709": {
+    "bank": "Navy Federal",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Platinum",
+    "country": "USA"
+  },
+  "526214": {
+    "bank": "USAA",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "World",
+    "country": "USA"
+  },
+  "479999": {
+    "bank": "Credit Union",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Rewards",
+    "country": "USA"
+  },
+  "542418": {
+    "bank": "Discover Bank",
+    "type": "debit",
+    "brand": "mastercard",
+    "level": "Standard",
+    "country": "USA"
+  },
+  "498765": {
+    "bank": "Green Dot",
+    "type": "debit",
+    "brand": "visa",
+    "level": "Prepaid",
+    "country": "USA"
+  },
+  "527777": {
+    "bank": "NetSpend",
+    "type": "debit",
+    "brand": "mastercard",
+    "level": "Prepaid",
+    "country": "USA"
+  },
+  "414720": {
+    "bank": "Bank of America Business",
+    "type": "credit",
+    "brand": "visa",
+    "level": "Business",
+    "country": "USA"
+  },
+  "555544": {
+    "bank": "Chase Business",
+    "type": "credit",
+    "brand": "mastercard",
+    "level": "Business",
+    "country": "USA"
+  }
+}

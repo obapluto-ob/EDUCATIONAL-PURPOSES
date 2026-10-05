@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plaid Logs</title>
+    <!-- Add Font Awesome CDN below -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(24,31,42,0.35);
+            z-index: -1;
+        }
+        .top-bar {
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wallet {
+            font-size: 16px;
+            color: #bee3f8;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            color: #fff;
+            background: rgba(0,0,0,0.14);
+            border-radius: 10px;
+            padding: 10px 16px;
+            max-width: 340px;
+            font-size: 15px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(44,82,130,0.10);
+        }
+        .wallet-badge {
+            background: linear-gradient(90deg, #23272f 60%, #38a169 100%);
+            color: #bee3f8;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(44,82,130,0.10);
+            letter-spacing: 0.3px;
+            border: 1px solid #38a169;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-shadow: 1px 1px 2px #222;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .wallet-badge span:last-child {
+            margin-left: 3px;
+            color: #fff;
+            background: rgba(56,161,105,0.18);
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .btn, .btn-back {
+            padding: 10px 16px;
+            background: #718096;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 18px;
+            width: auto;
+            display: inline-block;
+        }
+        .btn-back {
+            background: #38a169 !important;
+            color: #fff !important;
+            font-weight: bold;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px #0004;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-back:hover {
+            background: #276749 !important;
+            color: #bee3f8 !important;
+        }
+        .btn-buy {
+            background: #38a169;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .notice {
+            background: #223055;
+            color: #ffe082;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            border-radius: 14px;
+            border: 1.5px solid #2d3748;
+            font-size: 15px;
+            width: 350px;
+            min-height: 120px;
+            box-shadow: 0 2px 12px #0002;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        @media (max-width: 600px) {
+            .notice {
+                width: 98vw;
+                min-width: unset;
+                font-size: 13px;
+                padding: 10px 6px;
+            }
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 900px;
+            background: transparent !important;
+            margin-top: 10px;
+            color: #fff;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 2px 3px;
+            word-break: break-word;
+            background: transparent !important;
+            font-size: 11px;
+            font-family: monospace, 'Fira Mono', 'Consolas', 'Menlo', 'Courier', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #bee3f8;
+        }
+        .amount-cell {
+            text-align: right;
+            font-size: 12px;
+            min-width: 70px;
+            font-weight: bold;
+            background: rgba(30,41,59,0.7);
+        }
+        .cardtype-cell {
+            font-family: monospace, 'Fira Mono', 'Consolas', 'Menlo', 'Courier', Arial, sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffd700;
+            background: transparent !important;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 4px #222;
+        }
+        th { background: rgba(190,227,248
+            ,0.3); color: #90cdf4;}
+        tr:nth-child(even) { background: #1c2433; }
+        tr:hover { background: rgba(195,218,254,0.18); transition: background 0.2s;}
+        .warn { color: #ff6b6b; font-weight: bold; }
+        .pagination { margin: 24px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;}
+        .pagination .btn { font-size: 13px; padding: 6px 12px; margin-bottom: 0;}
+        @media (max-width: 900px) {
+            table { min-width: 700px; }
+        }
+        @media (max-width: 600px) {
+            .user-profile, .top-bar, .wallet-badge {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                font-size: 12px !important;
+                max-width: 100vw !important;
+                padding: 7px 8px !important;
+            }
+            .btn, .btn-back {
+                font-size: 12px !important;
+                padding: 5px 8px !important;
+                margin-bottom: 10px !important;
+            }
+            th, td, .amount-cell {
+                font-size: 10px !important;
+                padding: 2px 2px !important;
+                min-width: 50px !important;
+            }
+            .notice { font-size: 12px !important; padding: 10px !important; }
+            h2 { font-size: 18px !important; }
+        }
+        @media (max-width: 450px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 18px;
+                border: 2px solid #223055;
+                border-radius: 8px;
+                background: rgba(30,41,59,0.7);
+                box-shadow: 0 2px 8px #0002;
+                padding: 8px 0;
+            }
+            td {
+                text-align: left !important;
+                padding: 6px 8px !important;
+                min-width: unset !important;
+                font-size: 12px !important;
+                border: none;
+                border-bottom: 1px solid #223055;
+                position: relative;
+            }
+            td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #ffd700;
+                display: block;
+                margin-bottom: 2px;
+                font-size: 11px;
+            }
+            .btn, .btn-buy {
+                font-size: 12px !important;
+                padding: 7px 8px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div style="position:fixed; top:16px; right:18px; z-index:20;">
+        <div class="user-profile">
+            <div>
+                <span style="font-weight:600;">{{ current_user.username }}</span>
+                <span style="font-size:13px; color:#bee3f8;">{{ current_user.email }}</span>
+            </div>
+            <span class="wallet-badge">
+                Balance:
+                <span>${{ "%.2f"|format(current_user.wallet_balance or 0.0) }}</span>
+            </span>
+        </div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-bottom:18px;">
+        <a href="{{ url_for('main.index') }}" class="btn btn-back">&larr; Back to Dashboard</a>
+        <a href="{{ url_for('plaid_logs.history') }}" class="btn btn-back">Purchased History</a>
+    </div>
+    <h2>Plaid Logs</h2>
+    <div class="notice">
+        <b>⚠️ Final Warning:</b><br>
+        <span style="color:#ff6b6b;font-weight:bold;">
+            Once you purchase a log, the countdown begins. You have <u>7 minutes</u> to report any issues—after that, <b>no replacements</b> will be given, no matter the excuse. 
+            If you miss the window, you accept full responsibility. 
+            <br>
+            <span style="color:#ffd700;">We do not negotiate, and there are no second chances.</span>
+            <br>
+            <span style="color:#ff4c4c;">If you are not ready to act fast and smart, do not proceed.</span>
+        </span>
+        <br><br>
+        <span style="color:#38a169;font-weight:bold;">
+            On the bright side, every Plaid log here is <u>verified</u>, tested, and guaranteed to work at the moment of listing. 
+            Only the bold and skilled thrive here—if you know what you’re doing, you’ll find exactly what you need. 
+            <br>
+            <b>Proceed with confidence, but remember: fortune favors the brave, and hesitation is your enemy.</b>
+        </span>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="amount-cell">Log ID</th>
+                <th class="amount-cell">Card Number</th>
+                <th class="amount-cell">CVV</th>
+                <th class="amount-cell">Expiration</th>
+                <th class="amount-cell">BIN</th>
+                <th class="amount-cell">Type</th>
+                <th class="amount-cell">Brand</th>
+                <th class="amount-cell">Bank</th>
+                <th class="amount-cell">Country</th>
+                <th class="amount-cell">Cardholder Name</th>
+                <th class="amount-cell">State</th>
+                <th class="amount-cell">City</th>
+                <th class="amount-cell">Zip</th>
+                <th class="amount-cell">Address</th>
+                <th class="amount-cell">Phone</th>
+                <th class="amount-cell">SSN</th>
+                <th class="amount-cell">DOB</th>
+                <th class="amount-cell">Email</th>
+                <th class="amount-cell">Email Pass</th>
+                <th class="amount-cell">Acc Number</th>
+                <th class="amount-cell">Routine Number</th>
+                <th class="amount-cell">Bank Username</th>
+                <th class="amount-cell">Bank Password</th>
+                <th class="amount-cell">RDP Log</th>
+                <th class="amount-cell">Balance</th>
+                <th class="amount-cell">Price</th>
+                <th class="amount-cell">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+            <tr>
+                <td data-label="#">{{ (page - 1) * 10 + loop.index }}</td>
+                <td class="amount-cell" data-label="Log ID">{{ card.id }}</td>
+                <td class="amount-cell" data-label="Card Number">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.card_number }}
+                  {% else %}
+                    {{ card.card_number[:4] }} **** **** {{ card.card_number[-4:] }}
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="CVV">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.cvv }}
+                  {% else %}
+                    ***
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Expiration">{{ card.expiry }}</td>
+                <td class="amount-cell" data-label="BIN">{{ card.bin }}</td>
+                <td class="cardtype-cell amount-cell" data-label="Type">{{ card.type }}</td>
+                <td class="amount-cell" data-label="Brand">
+                  {% if card.brand|lower == "visa" %}
+                    <i class="fa-brands fa-cc-visa" style="color:#1a1f71; font-size:18px;" title="Visa"></i> Visa
+                  {% elif card.brand|lower == "mastercard" %}
+                    <i class="fa-brands fa-cc-mastercard" style="color:#eb001b; font-size:18px;" title="Mastercard"></i> Mastercard
+                  {% elif card.brand|lower == "amex" %}
+                    <i class="fa-brands fa-cc-amex" style="color:#2e77bb; font-size:18px;" title="Amex"></i> Amex
+                  {% elif card.brand|lower == "discover" %}
+                    <i class="fa-brands fa-cc-discover" style="color:#f79e1b; font-size:18px;" title="Discover"></i> Discover
+                  {% else %}
+                    {{ card.brand }}
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Bank">{{ card.bank }}</td>
+                <td class="amount-cell" data-label="Country">
+                    <img src="https://flagcdn.com/us.svg" alt="USA" style="width:16px;height:11px;vertical-align:middle;margin-right:3px;border-radius:2px;border:1px solid #223055;">
+                    {{ card.country }}
+                </td>
+                <td class="amount-cell" data-label="Cardholder Name">{{ card.cardholder_name }}</td>
+                <td class="amount-cell" data-label="State">{{ card.state }}</td>
+                <td class="amount-cell" data-label="City">{{ card.city }}</td>
+                <td class="amount-cell" data-label="Zip">{{ card.zip }}</td>
+                <td class="amount-cell" data-label="Address">{{ card.address }}</td>
+                <td class="amount-cell" data-label="Phone">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.phone }}
+                  {% else %}
+                    **********{{ card.phone[-4:] }}
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="SSN">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.ssn }}
+                  {% else %}
+                    ***
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="DOB">{{ card.dob }}</td>
+                <td class="amount-cell" data-label="Email">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.email }}
+                  {% else %}
+                    {{ card.email.split('@')[0][:2] }}****@{{ card.email.split('@')[1] }}
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Email Pass">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.email_pass }}
+                  {% else %}
+                    ********
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Acc Number">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.acc_number }}
+                  {% else %}
+                    *********
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Routine Number">{{ card.routine_number }}</td>
+                <td class="amount-cell" data-label="Bank Username">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.bank_username }}
+                  {% else %}
+                    {{ card.bank_username[:3] }}****{{ card.bank_username[-2:] }}
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Bank Password">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.bank_password }}
+                  {% else %}
+                    ********
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="RDP Log">
+                  {% if card.id in purchased_card_ids %}
+                    {{ card.rdp_log }}
+                  {% else %}
+                    ********
+                  {% endif %}
+                </td>
+                <td class="amount-cell" data-label="Balance">${{ "%.2f"|format(card.balance if card.balance is defined else 0.00) }}</td>
+                <td class="amount-cell" data-label="Price">${{ "%.2f"|format(card.price if card.price is defined else 0.00) }}</td>
+                <td class="amount-cell" data-label="Actions">
+                  <form method="post" action="{{ url_for('plaid_logs.buy') }}">
+                    <input type="hidden" name="card_id" value="{{ card.id }}">
+                    <input type="hidden" name="next" value="{{ request.full_path }}">
+                    <button type="submit" class="btn btn-buy">Buy</button>
+                  </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}" class="btn">Previous</a>
+        {% endif %}
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+                <a href="?page={{ p }}" class="btn active" style="background:#38a169;color:#fff;">{{ p }}</a>
+            {% else %}
+                <a href="?page={{ p }}" class="btn">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}" class="btn">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

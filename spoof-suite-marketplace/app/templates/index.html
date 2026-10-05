@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWSSMILITARIESZONE - Premium Marketplace</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Professional animations */
+    * {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Loading animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    /* Removed heavy animations to prevent lag */
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Mobile-first responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        max-width: 100%;
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+
+    h1 {
+      color: #ffd700;
+      margin-bottom: 10px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: 2px;
+      text-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+      text-transform: uppercase;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffd700 0%, #f59e0b 50%, #38a169 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .welcome {
+      color: #94a3b8;
+      font-size: clamp(14px, 2.5vw, 18px);
+      margin-bottom: 30px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .user-info {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 30px;
+      display: inline-block;
+      backdrop-filter: blur(10px);
+    }
+
+    .balance {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.1em;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stat-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .stat-card:hover::before {
+      left: 100%;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: #10b981;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .stat-card {
+        padding: 18px;
+        margin-bottom: 15px;
+      }
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border-color: #ffd700;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffd700, #10b981);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #ffd700, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-value {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: #ffd700;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .stat-name {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .categories-section {
+      margin-bottom: 40px;
+    }
+
+    .category-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .category-tab {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      border-radius: 25px;
+      padding: 12px 24px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .category-tab:hover,
+    .category-tab.active {
+      background: linear-gradient(135deg, #ffd700, #f59e0b);
+      color: #0f172a;
+      border-color: #ffd700;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .category-content {
+      display: none;
+    }
+
+    .category-content.active {
+      display: block;
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .data-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+      animation-delay: 0.2s;
+      animation-fill-mode: both;
+    }
+
+    .data-card:hover {
+      transform: translateY(-8px);
+      border-color: #10b981;
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.15);
+    }
+
+    .data-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .data-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .data-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      border-color: #10b981;
+    }
+
+    .data-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      color: #10b981;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .card-count {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+
+    .data-table th {
+      background: rgba(15, 23, 42, 0.8);
+      color: #ffd700;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    .data-table tr:hover {
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-verified {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .status-unverified {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .country-flag {
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    .bin-code {
+      font-family: 'Courier New', monospace;
+      background: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+      }
+
+      .stat-card {
+        padding: 20px 15px;
+      }
+
+      .category-tabs {
+        gap: 8px;
+      }
+
+      .category-tab {
+        padding: 10px 16px;
+        font-size: 0.8rem;
+      }
+
+      .data-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .data-card {
+        padding: 20px;
+      }
+
+      .data-table {
+        font-size: 0.8rem;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 8px;
+      }
+
+      /* Mobile table layout */
+      .data-table thead {
+        display: none;
+      }
+
+      .data-table,
+      .data-table tbody,
+      .data-table tr,
+      .data-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .data-table tr {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid #334155;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+
+      .data-table td {
+        border: none;
+        padding: 8px 0;
+        position: relative;
+        padding-left: 40%;
+      }
+
+      .data-table td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 0;
+        width: 35%;
+        font-weight: 600;
+        color: #ffd700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 15px 0;
+      }
+
+      .user-info {
+        padding: 12px 15px;
+        margin-bottom: 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .category-tab {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+      }
+
+      .data-card {
+        padding: 15px;
+      }
+
+      .card-header {
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+      }
+    }
+      .table-section table {
+        font-size: 13px;
+        min-width: 320px;
+      }
+      .btn, .dash-link {
+        font-size: 15px !important;
+        padding: 10px 12px !important;
+        border-radius: 7px !important;
+      }
+      #dashboard-menu-container {
+        left: 0 !important;
+        top: 44px !important;
+        width: 90vw !important;
+        max-width: 350px !important;
+        box-shadow: 0 2px 12px rgba(44,82,130,0.18);
+        background: rgba(30,41,59,0.98);
+        border-radius: 10px;
+      }
+      #dashboard-menu-container ul {
+        flex-direction: column;
+        gap: 0;
+      }
+      #dashboard-menu-container .dash-link {
+        font-size: 15px !important;
+        padding: 12px 0 !important;
+        text-align: left;
+        border-bottom: 1px solid #222;
+      }
+      .welcome {
+        font-size: 16px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        font-size: 1.1em;
+        margin-top: 18px;
+        margin-bottom: 8px;
+      }
+      .table-section th, .table-section td {
+        padding: 6px 8px;
+      }
+      .footer-section {
+        padding: 18px 0 10px 0 !important;
+      }
+    }
+
+    .table-section {
+      background: transparent;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 32px;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .table-section table {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+
+    .table-section th,
+    .table-section td {
+      padding: 8px 16px;
+      color: #bee3f8;
+    }
+
+    .table-section th {
+      font-weight: bold;
+      color: #fff !important;
+      background: rgba(30, 41, 59, 0.8) !important;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .table-section tr {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .table-section tr:hover {
+      background: rgba(144, 205, 244, 0.08);
+    }
+
+    .btn {
+      background: #2b6cb0;
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      box-shadow: 0 2px 8px rgba(44, 82, 130, 0.10);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background: #4299e1;
+      transform: translateY(-2px) scale(1.03);
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+      <h1>SWSSMILITARIESZONE</h1>
+
+      <!-- Professional Status Message -->
+      <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 800px; text-align: center; backdrop-filter: blur(5px);">
+        <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin: 0 0 8px 0; letter-spacing: 0.5px;">
+          <strong>MARKETPLACE STATUS - OPERATIONAL</strong>
+        </p>
+        <p style="color: #e2e8f0; font-size: 0.95rem; margin: 0; line-height: 1.5;">
+          Premium financial data marketplace with verified inventory. Real-time updates ensure fresh stock availability. Current inventory: <strong>{{ credit_count + debit_count }}</strong> payment cards, <strong>{{ plaid_logs_count }}</strong> banking logs, <strong>{{ fullz_count }}</strong> identity profiles. All products undergo quality verification before listing.
+        </p>
+      </div>
+    </div>
+  <!-- User Profile & Wallet Section (top right, horizontal) -->
+  <div
+    style="position: absolute; top: 12px; right: 12px; z-index: 20; display: flex; align-items: center; gap: 8px; color: #fff; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 6px 10px; max-width: 280px; font-size: 12px; text-align: left; box-shadow: 0 2px 8px rgba(44,82,130,0.10); backdrop-filter: blur(10px);">
+    <div>
+      <span style="font-weight:600; font-size:12px;">{{ user_profile.full_name }}</span>
+      <span style="font-size:10px; color:#bee3f8;">(@{{ user_profile.username }})</span>
+      <div style="font-size:10px; margin-top:1px;">{{ user_profile.email }}</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 4px;">
+      <span style="
+        background: linear-gradient(90deg, #23272f 60%, #38a169 100%);
+        color: #bee3f8;
+        padding: 1px 5px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(44,82,130,0.10);
+        letter-spacing: 0.2px;
+        border: 1px solid #38a169;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        text-shadow: 1px 1px 2px #222;
+        font-family: 'Segoe UI', Arial, sans-serif;
+      ">
+        <span style="text-transform: uppercase; font-size:9px;">Balance:</span>
+        <span style="margin-left:2px; color:#fff; background:rgba(56,161,105,0.18); padding:1px 3px; border-radius:4px; font-size:9px; font-weight:600;">
+          ${{ "%.2f"|format(user_profile.wallet_balance) }}
+        </span>
+      </span>
+      <a href="/payments/" class="btn" style="padding:3px 6px; font-size:9px; border-radius:4px;">Add Funds</a>
+    </div>
+  </div>
+  <!-- Remove Plaid Logs from dashboard quick links -->
+  <ul class="dash-list">
+    <!-- Other dashboard quick links remain -->
+  </ul>
+  <!-- Remove the entire search form below stats -->
+  <!--
+  <form action="/" method="get" style="margin-bottom:32px;">
+    <input type="text" name="search"
+      placeholder="Search BIN..."
+      style="padding:10px 18px; border-radius:8px; border:none; font-size:16px; width:220px;">
+  </form>
+  -->
+  <!-- Add this where you want the menu to appear -->
+  <div style="position: absolute; top: 12px; left: 12px; z-index: 21; display: flex; align-items: center; gap: 8px;">
+    <!-- Menu Button -->
+    <button id="menu-toggle" style="background: none; border: none; cursor: pointer; padding: 0;">
+      <span style="font-size: 24px; color: #bee3f8;">&#9776;</span>
+    </button>
+    <!-- Support Button -->
+    <a href="https://t.me/SWSSMILITARYZONE" target="_blank" class="btn" style="background:#38a169; font-size:10px; padding:4px 8px; border-radius:5px;">
+      Support
+    </a>
+    <!-- Cart Button -->
+    <a href="/cart/" class="btn" style="display:flex; align-items:center; gap:4px; background:#4299e1; font-size:10px; padding:4px 8px; border-radius:5px;">
+      <span>Cart</span>
+      {% if cart_count > 0 %}
+      <span style="background:#e53e3e; color:#fff; border-radius:50%; padding:1px 4px; font-size:8px; font-weight:bold;">
+        {{ cart_count }}
+      </span>
+      {% endif %}
+    </a>
+    <!-- Simple Alert Button (No Lag) -->
+    <button id="notification-btn" style="background: #10b981; color: #fff; border: none; border-radius: 4px; padding: 4px 8px; font-size: 10px; font-weight: 600; cursor: pointer; margin-left: 4px;">
+      Alerts
+      {% if notifications and notifications|length > 0 %}
+        <span style="background: #ef4444; color: #fff; border-radius: 50%; padding: 1px 4px; font-size: 8px; margin-left: 4px;">
+          {{ notifications|length }}
+        </span>
+      {% endif %}
+    </button>
+    <!-- Simple Alert Panel (No Lag) -->
+    <div id="notification-panel" style="display:none; position:absolute; top:40px; left:100px; background:#23272f; color:#e2e8f0; border:1px solid #10b981; border-radius:4px; padding:10px; min-width:250px; z-index:100;">
+      <strong style="color: #10b981;">Alerts ({{ notifications|length }})</strong>
+      <hr style="border-color:#10b981; margin:8px 0;">
+      {% if notifications %}
+        {% for note in notifications %}
+          <div style="margin-bottom:6px; font-size:0.85rem;">{{ note }}</div>
+        {% endfor %}
+      {% else %}
+        <div>No alerts.</div>
+      {% endif %}
+    </div>
+    <!-- Dashboard Menu (hidden by default) -->
+    <div id="dashboard-menu-container" style="display: none; margin-top: 8px; position: absolute; left: 0; top: 40px;">
+      <ul style="list-style: none; padding: 0; margin: 0;">
+
+        <li><a href="/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Dashboard</a></li>
+        <li><a href="/plaid-logs/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Plaid Logs</a></li>
+        <li><a href="{{ url_for('fullz.fullz_usa') }}" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">USA FULLZ</a></li>
+        <li><a href="/credit-cards/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Credit Cards</a></li>
+        <li><a href="/credit-cards/debit" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Debit Cards</a></li>
+        <li><a href="/bin-checker/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">BIN Checker</a></li>
+        <li><a href="/payments/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Add Funds</a></li>
+        <li><a href="/help/" class="dash-link" style="display:block; padding:10px 18px; text-transform:uppercase; font-weight:bold;">Help &amp; Guide</a></li>
+        <li><a href="/logout/" class="dash-link" style="display:block; padding:10px 18px; color:#ff6b6b; text-transform:uppercase; font-weight:bold;">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+    <!-- Stats Grid with Refresh Button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="color: #ffd700; margin: 0; font-size: 1.5rem;">Live Statistics</h2>
+      <button onclick="location.reload()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        Refresh Statistics
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ credit_count }}</div>
+        <div class="stat-name">Credit Cards</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ debit_count }}</div>
+        <div class="stat-name">Debit Cards</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ plaid_logs_count }}</div>
+        <div class="stat-name">Live Plaid Logs</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-value">{{ fullz_count }}</div>
+        <div class="stat-name">USA Fullz</div>
+      </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="categories-section">
+      <div class="category-tabs">
+        <div class="category-tab active" onclick="showCategory('live-data')">
+          Live Data
+        </div>
+        <div class="category-tab" onclick="showCategory('latest-bins')">
+          Latest BINs
+        </div>
+        <div class="category-tab" onclick="showCategory('payment-methods')">
+          Payment Methods
+        </div>
+      </div>
+
+      <!-- Live Data Category -->
+      <div id="live-data" class="category-content active">
+        <div class="data-grid">
+          <!-- Live Plaid Logs -->
+          <div class="data-card">
+            <div class="card-header">
+              <h3 class="card-title">Live Plaid Logs</h3>
+              <span class="card-count">{{ plaid_logs|length }}</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Bank</th>
+                  <th>Balance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in plaid_logs[:8] %}
+                <tr>
+                  <td data-label="Name">{{ log.cardholder_name }}</td>
+                  <td data-label="Bank">{{ log.bank }}</td>
+                  <td data-label="Balance">${{ "%.2f"|format(log.balance) }}</td>
+                  <td data-label="Status">
+                    <span class="status-badge status-verified">Live</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Live USA Fullz -->
+          <div class="data-card">
+            <div class="card-header">
+              <h3 class="card-title">Live USA Fullz</h3>
+              <span class="card-count">{{ fullz_logs|length }}</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>State</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for fullz in fullz_logs[:8] %}
+                <tr>
+                  <td data-label="Name">{{ fullz.name }}</td>
+                  <td data-label="DOB">{{ fullz.dob }}</td>
+                  <td data-label="State">{{ fullz.state }}</td>
+                  <td data-label="Status">
+                    <span class="status-badge status-verified">Fresh</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest BINs Category -->
+      <div id="latest-bins" class="category-content">
+        <div class="data-grid">
+          <!-- Latest BINs Overall -->
+          <div class="data-card">
+            <div class="card-header">
+              <h3 class="card-title">Latest BINs (Overall)</h3>
+              <span class="card-count">{{ latest_bins_overall|length }}</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>BIN</th>
+                  <th>Card Type</th>
+                  <th>Category</th>
+                  <th>Bank</th>
+                  <th>Country</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for bin in latest_bins_overall %}
+                <tr>
+                  <td data-label="BIN">
+                    <span class="bin-code">{{ bin.bin }}</span>
+                  </td>
+                  <td data-label="Card Type">
+                    <span style="color: {% if bin.type == 'Credit' %}#10b981{% else %}#3b82f6{% endif %}; font-weight: 600;">
+                      {{ bin.type }}
+                    </span>
+                  </td>
+                  <td data-label="Category">{{ bin.category }}</td>
+                  <td data-label="Bank">{{ bin.bank }}</td>
+                  <td data-label="Country">{{ bin.country }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Latest BINs by Country -->
+          <div class="data-card">
+            <div class="card-header">
+              <h3 class="card-title">Latest BINs by Country</h3>
+              <span class="card-count">{{ latest_bins_country|length }}</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>BIN</th>
+                  <th>Card Type</th>
+                  <th>Category</th>
+                  <th>Bank</th>
+                  <th>Country</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for bin in latest_bins_country %}
+                <tr>
+                  <td data-label="BIN">
+                    <span class="bin-code">{{ bin.bin }}</span>
+                  </td>
+                  <td data-label="Card Type">
+                    <span style="color: {% if bin.type == 'Credit' %}#10b981{% else %}#3b82f6{% endif %}; font-weight: 600;">
+                      {{ bin.type }}
+                    </span>
+                  </td>
+                  <td data-label="Category">{{ bin.category }}</td>
+                  <td data-label="Bank">{{ bin.bank }}</td>
+                  <td data-label="Country">{{ bin.country }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Methods Category -->
+      <div id="payment-methods" class="category-content">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h3 style="color: #ffd700; margin-bottom: 10px;">Accepted Payment Methods</h3>
+          <p style="color: #ef4444; font-weight: 600; font-size: 1.1rem; margin: 0;">
+            Minimum Deposit: $50 to make purchases
+          </p>
+        </div>
+
+        <div class="data-grid">
+          <!-- Bitcoin Payment -->
+          <div class="data-card">
+            <div class="card-header">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="data:image/png;base64,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" alt="Bitcoin" style="width: 40px; height: 40px;">
+                <div>
+                  <h3 class="card-title">Bitcoin (BTC)</h3>
+                  <span style="color: #f7931a; font-size: 0.9rem; font-weight: 600;">Most Popular</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding: 20px 0;">
+              <p style="color: #94a3b8; margin-bottom: 15px;">Fast, secure, and globally accepted cryptocurrency payments.</p>
+              <div style="background: rgba(247, 147, 26, 0.1); border: 1px solid rgba(247, 147, 26, 0.3); border-radius: 8px; padding: 15px;">
+                <p style="color: #f7931a; font-weight: 600; margin: 0 0 10px 0;">Min: $50 | Max: $50,000</p>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin: 5px 0 10px;">Processing: Instant confirmation</p>
+                <div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 10px; margin-top: 10px;">
+                  <p style="color: #f7931a; font-weight: 600; margin: 0 0 5px 0; font-size: 0.9rem;">Wallet Address:</p>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="btc-wallet-dashboard" style="color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 0.8rem; word-break: break-all;">{{ btc_wallet_address }}</span>
+                    <button onclick="copyAddress('btc-wallet-dashboard')" style="background: #f7931a; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">Copy</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- USDT Payment -->
+          <div class="data-card">
+            <div class="card-header">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="data:image/png;base64,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" alt="USDT" style="width: 40px; height: 40px;">
+                <div>
+                  <h3 class="card-title">Tether (USDT)</h3>
+                  <span style="color: #26a17b; font-size: 0.9rem; font-weight: 600;">Stable Coin</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding: 20px 0;">
+              <p style="color: #94a3b8; margin-bottom: 15px;">Stable coin pegged to USD. No volatility, instant processing.</p>
+              <div style="background: rgba(38, 161, 123, 0.1); border: 1px solid rgba(38, 161, 123, 0.3); border-radius: 8px; padding: 15px;">
+                <p style="color: #26a17b; font-weight: 600; margin: 0 0 10px 0;">Min: $50 | Max: $100,000</p>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin: 5px 0 10px;">Processing: Instant confirmation</p>
+                <div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 10px; margin-top: 10px;">
+                  <p style="color: #26a17b; font-weight: 600; margin: 0 0 5px 0; font-size: 0.9rem;">Wallet Address (TRC20):</p>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="usdt-wallet-dashboard" style="color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 0.8rem; word-break: break-all;">{{ usdt_wallet_address }}</span>
+                    <button onclick="copyAddress('usdt-wallet-dashboard')" style="background: #26a17b; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">Copy</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="/payments/" style="background: linear-gradient(135deg, #ffd700, #f59e0b); color: #0f172a; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1rem; display: inline-block; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(255,215,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            Add Funds to Wallet
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript for Category Switching -->
+    <script>
+      function showCategory(categoryId) {
+        // Hide all category contents
+        const contents = document.querySelectorAll('.category-content');
+        contents.forEach(content => {
+          content.classList.remove('active');
+        });
+
+        // Remove active class from all tabs
+        const tabs = document.querySelectorAll('.category-tab');
+        tabs.forEach(tab => {
+          tab.classList.remove('active');
+        });
+
+        // Show selected category
+        document.getElementById(categoryId).classList.add('active');
+
+        // Add active class to clicked tab
+        event.target.closest('.category-tab').classList.add('active');
+      }
+
+      // Copy wallet address function
+      function copyAddress(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          const text = element.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            // Show success feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.background = '#10b981';
+            setTimeout(function() {
+              button.textContent = originalText;
+              button.style.background = '';
+            }, 2000);
+          }).catch(function(err) {
+            console.error('Could not copy text: ', err);
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.background = '#10b981';
+            setTimeout(function() {
+              button.textContent = originalText;
+              button.style.background = '';
+            }, 2000);
+          });
+        }
+      }
+
+      // Menu toggle functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menu-toggle');
+        const notificationBtn = document.getElementById('notification-btn');
+
+        if (menuToggle) {
+          menuToggle.onclick = function () {
+            var menu = document.getElementById('dashboard-menu-container');
+            if (menu) {
+              menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+            }
+          };
+        }
+
+        // Notification button handled by separate script below
+      });
+    </script>
+
+  </div>
+
+  <!-- Simple Alert System (Working) -->
+  <script>
+    // Simple notification toggle (no conflicts)
+    document.addEventListener('DOMContentLoaded', function() {
+      const notificationBtn = document.getElementById('notification-btn');
+      const notificationPanel = document.getElementById('notification-panel');
+
+      if (notificationBtn && notificationPanel) {
+        // Simple click handler
+        notificationBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          // Simple toggle
+          if (notificationPanel.style.display === 'none' || !notificationPanel.style.display) {
+            notificationPanel.style.display = 'block';
+          } else {
+            notificationPanel.style.display = 'none';
+          }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!notificationPanel.contains(e.target) && e.target !== notificationBtn) {
+            notificationPanel.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Quick Data Management Features -->
+  <script>
+    // Export functionality
+    function exportBINs() {
+      const data = [];
+      document.querySelectorAll('.data-table tbody tr').forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 4) {
+          data.push({
+            bin: cells[0].textContent.trim(),
+            type: cells[1].textContent.trim(),
+            bank: cells[2].textContent.trim(),
+            country: cells[3].textContent.trim()
+          });
+        }
+      });
+
+      const csv = 'BIN,Type,Bank,Country\n' +
+                  data.map(row => `${row.bin},${row.type},${row.bank},${row.country}`).join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bins_export.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Enhanced search functionality with better performance
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add search to specific data tables only
+      const dataCards = document.querySelectorAll('.data-card');
+
+      dataCards.forEach((card, index) => {
+        const header = card.querySelector('h3');
+        const table = card.querySelector('.data-table');
+
+        // Only add search to cards with tables (BINs and Live Data)
+        if (header && table && (
+          header.textContent.includes('Latest BINs') ||
+          header.textContent.includes('Live Data') ||
+          header.textContent.includes('Plaid Logs') ||
+          header.textContent.includes('Fullz')
+        )) {
+
+          // Create search container
+          const searchContainer = document.createElement('div');
+          searchContainer.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-top: 10px;';
+
+          // Create search input
+          const searchBox = document.createElement('input');
+          searchBox.type = 'text';
+          searchBox.placeholder = 'Search table...';
+          searchBox.style.cssText = `
+            padding: 8px 12px;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.3s ease;
+          `;
+
+          // Create clear button
+          const clearBtn = document.createElement('button');
+          clearBtn.textContent = '✕';
+          clearBtn.style.cssText = `
+            padding: 8px 10px;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            background: #374151;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+          `;
+
+          // Search functionality with debouncing
+          let searchTimeout;
+          searchBox.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+              const filter = this.value.toLowerCase().trim();
+              const rows = table.querySelectorAll('tbody tr');
+              let visibleCount = 0;
+
+              rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const isVisible = text.includes(filter);
+                row.style.display = isVisible ? '' : 'none';
+                if (isVisible) visibleCount++;
+              });
+
+              // Update search box style based on results
+              if (filter && visibleCount === 0) {
+                searchBox.style.borderColor = '#ef4444';
+                searchBox.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+              } else if (filter && visibleCount > 0) {
+                searchBox.style.borderColor = '#10b981';
+                searchBox.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+              } else {
+                searchBox.style.borderColor = '#334155';
+                searchBox.style.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+              }
+            }, 150); // 150ms debounce
+          });
+
+          // Clear functionality
+          clearBtn.addEventListener('click', function() {
+            searchBox.value = '';
+            searchBox.style.borderColor = '#334155';
+            searchBox.style.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+              row.style.display = '';
+            });
+            searchBox.focus();
+          });
+
+          // Hover effects
+          searchBox.addEventListener('focus', function() {
+            this.style.borderColor = '#10b981';
+            this.style.boxShadow = '0 0 0 2px rgba(16, 185, 129, 0.2)';
+          });
+
+          searchBox.addEventListener('blur', function() {
+            if (!this.value) {
+              this.style.borderColor = '#334155';
+              this.style.boxShadow = 'none';
+            }
+          });
+
+          clearBtn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#ef4444';
+            this.style.borderColor = '#ef4444';
+          });
+
+          clearBtn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#374151';
+            this.style.borderColor = '#334155';
+          });
+
+          // Add to DOM
+          searchContainer.appendChild(searchBox);
+          searchContainer.appendChild(clearBtn);
+          header.parentNode.insertBefore(searchContainer, table);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

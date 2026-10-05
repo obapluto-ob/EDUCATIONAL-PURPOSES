@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Funds</title>
+  <style>
+    body {
+      background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .pay-box {
+      background: rgba(0,0,0,0.18);
+      padding: 32px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 48px;
+      max-width: 420px;
+    }
+    .pay-title {
+      color: #bee3f8;
+      font-size: 1.5em;
+      margin-bottom: 18px;
+    }
+    .pay-label {
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .pay-address {
+      font-size: 13px;
+      color: #bee3f8;
+      word-break: break-all;
+      margin-bottom: 18px;
+    }
+    .pay-methods {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .pay-method {
+      text-align: center;
+    }
+    .pay-method img {
+      width: 48px;
+      margin-bottom: 8px;
+    }
+    form {
+      margin-top: 32px;
+    }
+    input[type="number"] {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      width: 180px;
+    }
+    button {
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: none;
+      background: #2b6cb0;
+      color: #fff;
+      font-size: 16px;
+    }
+    .wallet-balance {
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    .flash-messages {
+      margin-top: 18px;
+      list-style: none;
+      padding: 0;
+    }
+    .flash-success {
+      color: #bee3f8;
+    }
+    .flash-danger {
+      color: #ff6b6b;
+    }
+    .pay-info {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #ff6b6b;
+    }
+    .pay-instruction {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #bee3f8;
+    }
+    table {
+      width: 100%;
+      background: rgba(24, 31, 42, 0.6);
+      color: #fff;
+      border-radius: 8px;
+      margin-top: 32px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    th {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="pay-box">
+    <div class="pay-title">Add Funds</div>
+    <!-- Cashback Offer Banner -->
+    <div style="background:#ffd700;color:#222;padding:12px;border-radius:8px;margin-bottom:18px;font-weight:bold;">
+      Special Offer: Deposit <b>$300</b> or more and get <b>50% cashback</b> instantly!
+    </div>
+    <div class="wallet-balance">
+      <strong>Current Wallet Balance:</strong>
+      <span style="color:#bee3f8;">${{ "%.2f"|format(wallet_balance) }}</span>
+    </div>
+    <div style="margin-top:12px; color:#bee3f8;">
+      Your funds are available for purchases once your deposit is confirmed.<br>
+      Current Balance: <strong>${{ "%.2f"|format(wallet_balance) }}</strong>
+    </div>
+    <div class="pay-methods">
+      <!-- USDT (TRC20) -->
+      <div class="pay-method">
+        <img src="data:image/png;base64,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" alt="USDT" />
+        <div style="font-weight:bold; color:#fff;">USDT (TRC20)</div>
+        <div class="pay-address">
+          Wallet Address:<br>
+          <span id="usdt-wallet">{{ usdt_wallet_address }}</span>
+          <button onclick="copyAddress('usdt-wallet')" style="margin-left:8px; padding:2px 8px; font-size:12px; border-radius:4px; border:none; background:#bee3f8; color:#222; cursor:pointer;">
+            Copy
+          </button>
+        </div>
+      </div>
+      <!-- BTC -->
+      <div class="pay-method">
+  <img src="data:image/png;base64,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" alt="BTC" />
+  <div style="font-weight:bold; color:#fff;">BTC</div>
+  <div class="pay-address">
+    Wallet Address:<br>
+    <span id="btc-wallet">{{ btc_wallet_address }}</span>
+    <button onclick="copyAddress('btc-wallet')" style="margin-left:8px; padding:2px 8px; font-size:12px; border-radius:4px; border:none; background:#bee3f8; color:#222; cursor:pointer;">
+      Copy
+    </button>
+  </div>
+</div>
+    </div>
+    <div class="pay-info">
+      ⚠️ Minimum deposit is <strong>$50</strong>. <br>
+      Send only USDT (TRC20) or BTC to the addresses above.<br>
+      After sending funds, please wait for blockchain confirmation.<br>
+      <span style="color:#bee3f8;">BTC deposits</span> may take up to 30-60 minutes to confirm.<br>
+      <span style="color:#bee3f8;">USDT (TRC20) deposits</span> are usually confirmed within 5-15 minutes.<br>
+      Your balance will be updated once the transaction is confirmed.
+    </div>
+    <form method="post" action="{{ url_for('payments.add_funds') }}">
+      <input type="number" step="0.01" name="amount" placeholder="Amount deposited" required>
+      <select name="currency">
+        <option value="BTC">BTC</option>
+        <option value="USDT">USDT (TRC20)</option>
+      </select>
+      <input type="text" name="tx_hash" placeholder="Transaction Hash" required>
+      <button type="submit">Submit Deposit</button>
+    </form>
+    <a href="/">Back to Dashboard</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+        {% for category, message in messages %}
+          <li class="flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+  <h3>Your Deposits</h3>
+  <table>
+      <thead>
+          <tr>
+              <th>Amount</th>
+              <th>Currency</th>
+              <th>Tx Hash</th>
+              <th>Status</th>
+              <th>Cashback</th> <!-- Added column -->
+          </tr>
+      </thead>
+      <tbody>
+          {% for dep in deposits %}
+          <tr>
+              <td>${{ "%.2f"|format(dep.amount) }}</td>
+              <td>{{ dep.currency }}</td>
+              <td style="font-size:11px;">{{ dep.tx_hash }}</td>
+              <td>
+                  {% if dep.status == 'pending' %}
+                      <span style="color:#ffd700;">Pending</span>
+                  {% elif dep.status == 'confirmed' %}
+                      <span style="color:#38a169;">Accepted</span>
+                  {% elif dep.status == 'cancelled' %}
+                      <span style="color:#e53e3e;">Cancelled</span>
+                  {% elif dep.status == 'declined' %}
+                      <span style="color:#e53e3e;">Declined</span>
+                  {% else %}
+                      {{ dep.status }}
+                  {% endif %}
+              </td>
+              <td>
+                {% if dep.status == 'confirmed' and dep.amount >= 300 %}
+                  <span style="color:#ffd700;font-weight:bold;">${{ "%.2f"|format(dep.amount * 0.5) }} cashback</span>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  <script>
+    function copyAddress(id) {
+      const addressElem = document.getElementById(id);
+      const address = addressElem.textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(address).then(function() {
+          alert("Address copied!");
+        }, function() {
+          alert("Failed to copy address.");
+        });
+      } else {
+        const range = document.createRange();
+        range.selectNode(addressElem);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        try {
+          document.execCommand('copy');
+          alert("Address copied!");
+        } catch (err) {
+          alert("Failed to copy address.");
+        }
+        window.getSelection().removeAllRanges();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debit Cards</title>
+    <style>
+        body { background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk='); background-size: cover; background-repeat: no-repeat; background-position: center center; background-attachment: fixed; min-height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+        h1 { color: #fff; text-shadow: 2px 2px 8px #222; }
+        .btn { padding: 10px 16px; background: #2b6cb0; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;}
+        .btn:hover { background: #2c5282;}
+        .btn-buy { background: #38a169; }
+        .btn-buy:hover { background: #276749; }
+        .btn-back { background: #718096; margin-bottom: 18px; width: auto;}
+        .btn-back:hover { background: #4a5568; }
+        .pagination { margin-top: 20px; display: flex; justify-content: center; gap: 10px;}
+        .pagination a { padding: 8px 12px; background: #bee3f8; color: #2b6cb0; border-radius: 4px; text-decoration: none; font-weight: bold;}
+        table { border-collapse: collapse; width: 100%; background: transparent; margin-top: 10px; color: #fff; }
+        th, td { border: 1px solid #e2e8f0; padding: 6px 8px; word-break: break-word; background: rgba(30,41,59,0.7); }
+        th { background: rgba(30,41,59,0.9); color: #fff; font-weight: bold; text-shadow: 1px 1px 2px #000;}
+        tr:hover { background: rgba(195,218,254,0.18); transition: background 0.2s;}
+        .no-data { color: #e53e3e; font-weight: bold; margin-top: 20px; text-shadow: 1px 1px 6px #222;}
+        .search-bar { display: flex; gap: 8px; margin-bottom: 24px;}
+        .search-input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 16px; width: 260px; background: rgba(30,41,59,0.7); color: #fff;}
+        .search-btn { padding: 8px 18px; background: #2b6cb0; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;}
+        .search-btn:hover { background: #2c5282;}
+        .action-btns { display: flex; flex-direction: row; gap: 3px; justify-content: center; }
+        .btn-small { padding: 4px 10px; font-size: 12px; border-radius: 4px; min-width: 0; margin: 0 2px; }
+        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .status-badge.verified { background-color: #28a745; color: white; }
+        .status-badge.unverified { background-color: #ffc107; color: #212529; }
+        .flag-cell { background: rgba(255,255,255,0.1) !important; border: 2px solid rgba(255,255,255,0.2) !important; }
+        /* Enhanced table styling */
+        table { font-size: 12px; border-spacing: 0; width: 100%; border-collapse: separate; border-radius: 8px; overflow: hidden; }
+        th { font-size: 10px; padding: 12px 4px; text-align: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); }
+        td { padding: 8px 4px; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); text-align: center; white-space: nowrap; font-size: 11px; }
+        tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+        tr:nth-child(odd) { background: rgba(0,0,0,0.15); }
+        tr:hover { background: rgba(195,218,254,0.1) !important; }
+
+        /* Country column styling */
+        .country-cell {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%) !important;
+            border-left: 3px solid rgba(255,215,0,0.6) !important;
+            min-width: 100px;
+            max-width: 130px;
+        }
+
+        /* State column styling */
+        .state-cell {
+            background: rgba(45,55,72,0.9) !important;
+            border-left: 2px solid rgba(66,153,225,0.5) !important;
+            min-width: 80px;
+            max-width: 100px;
+        }
+
+        /* City column styling */
+        .city-cell {
+            background: rgba(45,55,72,0.8) !important;
+            border-left: 2px solid rgba(129,140,248,0.5) !important;
+            min-width: 90px;
+            max-width: 120px;
+        }
+
+        /* Address column styling */
+        .address-cell {
+            background: rgba(30,41,59,0.9) !important;
+            border-left: 2px solid rgba(72,187,120,0.5) !important;
+            min-width: 150px;
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- User Profile & Wallet Section (top right) -->
+    <div style="position: absolute; top: 18px; right: 18px; z-index: 20; display: flex; align-items: center; gap: 18px; color: #fff; background: rgba(0,0,0,0.14); border-radius: 10px; padding: 10px 16px; max-width: 340px; font-size: 15px; text-align: left; box-shadow: 0 2px 8px rgba(44,82,130,0.10);">
+      <div>
+        <span style="font-weight:600;">{{ user_profile.full_name }}</span>
+        <span style="font-size:13px; color:#bee3f8;">(@{{ user_profile.username }})</span>
+        <div style="font-size:13px; margin-top:2px;">Email: {{ user_profile.email }}</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="background: linear-gradient(90deg, #23272f 60%, #38a169 100%); color: #bee3f8; padding: 2px 7px; border-radius: 10px; font-size: 12px; font-weight: 600; box-shadow: 0 1px 3px rgba(44,82,130,0.10); letter-spacing: 0.3px; border: 1px solid #38a169; display: flex; align-items: center; gap: 4px; text-shadow: 1px 1px 2px #222; font-family: 'Segoe UI', Arial, sans-serif;">
+          <span style="text-transform: uppercase;">Balance:</span>
+          <span style="margin-left:3px; color:#fff; background:rgba(56,161,105,0.18); padding:1px 5px; border-radius:6px; font-size:12px; font-weight:600;">
+            ${{ "%.2f"|format(user_profile.wallet_balance) }}
+          </span>
+        </span>
+        <a href="/payments/" class="btn" style="padding:5px 10px; font-size:12px; border-radius:5px;">Add Funds</a>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:flex-start; gap:6px; margin-bottom:18px;">
+        <a href="/" class="btn btn-back">Back</a>
+        <a href="/cart/" class="btn" style="background:rgba(30,41,59,0.0); color:#fff; font-weight:bold; display:flex; align-items:center; gap:7px; border:1px solid #bee3f8;"
+           title="You have {{ cart_count }} item{{ '' if cart_count == 1 else 's' }} in your cart">
+            View Cart
+            <span style="background:#bee3f8; color:#2b6cb0; font-weight:bold; border-radius:8px; padding:2px 7px; font-size:13px; margin-left:2px;">
+                {{ cart_count or 0 }}
+            </span>
+        </a>
+        <a href="{{ url_for('credit_cards.card_history') }}" class="btn btn-back">Purchased History</a>
+    </div>
+    <h1>Debit Cards</h1>
+    <div style="color:#bee3f8; font-size:15px; margin-bottom:8px;">
+        Your wallet balance: <b style="color:#38a169;">${{ "%.2f"|format(user_profile.wallet_balance) }}</b>
+        &nbsp;—&nbsp; Card price is shown in the table. Make sure you have enough balance before buying.
+    </div>
+    <form method="get" class="search-bar" action="{{ url_for('credit_cards.debit_cards_page') }}">
+        <input type="text" name="search" class="search-input" placeholder="Search by BIN (first 6 digits)" value="{{ request.args.get('search', '') }}">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    {% if cards %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Card Number</th>
+                    <th>CVV</th>
+                    <th>Expiry</th>
+                    <th>Brand</th>
+                    <th>Level</th>
+                    <th>Holder Name</th>
+                    <th>Bank</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>ID/SSN</th>
+                    <th>DOB</th>
+                    <th>Balance</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for card in cards %}
+                <tr>
+                    <td>{{ (page - 1) * 10 + loop.index }}</td>
+                    <td>
+                        {% if card.card_number in purchased_cards %}
+                            {{ card.card_number }}
+                        {% else %}
+                            {{ card.card_number[:6] }} **** **** **{{ card.card_number[-2:] }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if card.card_number in purchased_cards %}
+                            {{ card.cvv }}
+                        {% else %}
+                            ***
+                        {% endif %}
+                    </td>
+                    <td>{{ card.expiry }}</td>
+                    <td>
+                        {% if card.brand == 'visa' %}
+                            <span style="background: #1a1f71; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px;">VISA</span>
+                            <span style="color: #1a1f71; font-weight: bold; margin-left: 5px;">VISA</span>
+                        {% elif card.brand == 'mastercard' %}
+                            <span style="background: linear-gradient(90deg, #eb001b 50%, #f79e1b 50%); color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px;">MC</span>
+                            <span style="color: #eb001b; font-weight: bold; margin-left: 5px;">MASTERCARD</span>
+                        {% elif card.brand == 'amex' %}
+                            <span style="background: #006fcf; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px;">AMEX</span>
+                        {% elif card.brand == 'discover' %}
+                            <span style="background: #ff6000; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px;">DISC</span>
+                        {% else %}
+                            {{ card.brand|title }}
+                        {% endif %}
+                    </td>
+                    <td>{{ card.level or 'Standard' }}</td>
+                    <td>{{ card.holder_name }}</td>
+                    <td>{{ card.bank }}</td>
+                    <td class="country-cell" style="padding: 8px;">
+                        {% if card.country == 'USA' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/us.svg" alt="USA" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/us.png'">
+                        {% elif card.country == 'UK' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/gb.svg" alt="UK" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/gb.png'">
+                        {% elif card.country == 'Canada' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/ca.svg" alt="Canada" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/ca.png'">
+                        {% elif card.country == 'Germany' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/de.svg" alt="Germany" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/de.png'">
+                        {% elif card.country == 'France' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/fr.svg" alt="France" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/fr.png'">
+                        {% elif card.country == 'Australia' %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/au.svg" alt="Australia" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/au.png'">
+                        {% else %}
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/un.svg" alt="Unknown" style="width:22px;height:16px;vertical-align:middle;margin-right:6px;border-radius:2px;border:1px solid #223055;" onerror="this.src='https://flagcdn.com/w20/un.png'">
+                        {% endif %}
+                        <span style="font-weight: 600; color: #fff;">{{ card.country }}</span>
+                    </td>
+                    <td class="state-cell" style="padding: 8px; text-align: center;">
+                        <div style="font-weight: 600; color: #fff; font-size: 13px;">
+                            {{ card.state }}
+                        </div>
+                    </td>
+                    <td class="city-cell" style="padding: 8px; text-align: center;">
+                        <div style="font-weight: 600; color: #fff; font-size: 13px;">
+                            {{ card.city }}
+                        </div>
+                    </td>
+                    <td class="address-cell" style="padding: 8px;">
+                        <div style="font-size: 12px; color: #fff; margin-bottom: 2px;">
+                            {{ card.address }}
+                        </div>
+                        <div style="font-size: 11px; color: #90cdf4;">
+                            ZIP: {{ card.zip_code }}
+                        </div>
+                    </td>
+                    <td style="text-align: center; white-space: nowrap; font-size: 11px;">
+                        <span style="color: #a0aec0; font-family: monospace;">****{{ card.phone[-4:] if card.phone else '****' }}</span>
+                    </td>
+                    <td style="text-align: center; white-space: nowrap; font-size: 11px;">
+                        {% if card.note == 'verified' %}
+                            <span style="color: #a0aec0; font-family: monospace;">***-**-{{ card.ssn[-4:] if card.ssn else '****' }}</span>
+                        {% else %}
+                            <span style="color: #a0aec0;">***</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center; white-space: nowrap; font-size: 11px;">
+                        {% if card.note == 'verified' %}
+                            <span style="color: #a0aec0; font-family: monospace;">**/**/{{ card.dob[-4:] if card.dob else '****' }}</span>
+                        {% else %}
+                            <span style="color: #a0aec0;">***</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        {% if card.note == 'verified' and card.balance %}
+                            <span style="color: #48bb78; font-weight: bold; font-size: 13px;">${{ "%.2f"|format(card.balance) }}</span>
+                        {% else %}
+                            <span style="color: #ff6b6b; font-weight: bold; font-size: 12px; background: rgba(255,107,107,0.15); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,107,107,0.3);">
+                                {% if card.validity_percent %}
+                                    {{ card.validity_percent }}% valid
+                                {% else %}
+                                    Hidden
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center; white-space: nowrap; font-weight: bold; color: #ffd700;">
+                        {% if card.price is not none %}
+                            ${{ "%.2f"|format(card.price) }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <span class="status-badge {% if card.note == 'verified' %}verified{% else %}unverified{% endif %}">
+                            {{ card.note or 'not checked' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            {% if card.card_number in cart_card_numbers %}
+                                <button class="btn btn-small" disabled>Added</button>
+                            {% else %}
+                                <form method="post" action="{{ url_for('cart.add_to_cart') }}">
+                                    <input type="hidden" name="card_number" value="{{ card.card_number }}">
+                                    <input type="hidden" name="card_type" value="{{ card.card_type }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="next" value="{{ request.full_path }}">
+                                    <button type="submit" class="btn btn-small">Add</button>
+                                </form>
+                            {% endif %}
+                            <form method="post" action="{{ url_for('credit_cards.buy_card') }}">
+                                <input type="hidden" name="card_number" value="{{ card.card_number }}">
+                                <input type="hidden" name="next" value="{{ request.full_path }}">
+                                {% if card.card_number in purchased_cards %}
+                                    <button type="submit" class="btn btn-buy btn-small" disabled>✓</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-buy btn-small">Buy</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="no-data">Cards are coming soon. Please check back later!</div>
+    {% endif %}
+
+    {% if bin_message %}
+        <div class="no-data">{{ bin_message }}</div>
+    {% endif %}
+
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}{% if search %}&search={{ search }}{% endif %}" class="btn">Previous</a>
+        {% endif %}
+        {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}{% if search %}&search={{ search }}{% endif %}" class="btn">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

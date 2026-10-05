@@ -1,0 +1,14 @@
+[build]
+  publish = "dist"
+  command = "python build_static.py"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Help | Smart Wallet Spoof Suite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #181f2a url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=') no-repeat center center fixed;
+            background-size: cover;
+            color: #e2e8f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 420px;
+            margin: 40px auto 0 auto;
+            background: rgba(24,31,42,0.82);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0003;
+            padding: 24px 16px;
+        }
+        h1 {
+            color: #bee3f8;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #ffd700;
+            font-size: 1.1em;
+            margin-top: 22px;
+            margin-bottom: 8px;
+        }
+        ul, ol {
+            margin-left: 16px;
+            margin-bottom: 14px;
+            font-size: 0.97em;
+        }
+        .warning {
+            background: #223055;
+            color: #ff6b6b;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: bold;
+            margin-bottom: 14px;
+            border: 1.5px solid #2d3748;
+            font-size: 0.98em;
+        }
+        .brave {
+            background: #23272f;
+            color: #ffd700;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: bold;
+            margin-bottom: 14px;
+            border: 1.5px solid #ffd700;
+            font-size: 0.98em;
+        }
+        a {
+            color: #38a169;
+            text-decoration: underline;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        .btn-back {
+            display: inline-block;
+            background: #38a169;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 6px;
+            padding: 8px 14px;
+            text-decoration: none;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px #0004;
+            font-size: 14px;
+            margin-bottom: 18px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-back:hover {
+            background: #276749;
+            color: #bee3f8;
+        }
+        @media (max-width: 500px) {
+            .container { padding: 10px 2px; }
+            h1 { font-size: 1.1em; }
+            h2 { font-size: 1em; }
+            .btn-back { font-size: 12px; padding: 7px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('main.index') }}" class="btn-back">&larr; Dashboard</a>
+        <h1>Help &amp; Quick Guide</h1>
+        <div class="warning">
+            ⚠️ New? <u>Contact support first</u> before buying.<br>
+            Mistakes are costly—our team helps you succeed.<br>
+            <span style="color:#ffd700;">No negotiations. No second chances.</span>
+        </div>
+        <div class="brave">
+            Only the bold thrive here.<br>
+            <b>Act fast. Hesitation is your enemy.</b>
+        </div>
+        <h2>How To Use</h2>
+        <ol>
+            <li><b>Browse:</b> See live credit cards, debit cards, Plaid logs, and fullz.</li>
+            <li><b>Search:</b> Use BIN search or filters for what you need.</li>
+            <li><b>Add to Cart:</b> Select items, add to cart, buy when ready.</li>
+            <li><b>Purchase:</b> Make sure your wallet has funds. Buy instantly, get full details.</li>
+            <li><b>Support:</b> <a href="https://t.me/SWSSMILITARYZONE" target="_blank">Telegram Support</a> if you need help.</li>
+        </ol>
+        <h2>Tips &amp; Safety</h2>
+        <ul>
+            <li>Check wallet balance before buying.</li>
+            <li>Use search and filters for best results.</li>
+            <li>Act quickly after purchase—replacement window is short.</li>
+            <li>If unsure, <a href="https://t.me/SWSSMILITARYZONE" target="_blank">ask support</a> before buying.</li>
+        </ul>
+        <h2>Contact &amp; Support</h2>
+        <ul>
+            <li>Telegram: <a href="https://t.me/SWSSMILITARYZONE" target="_blank">@SWSSMILITARYZONE</a></li>
+            <li>Email: <a href="mailto:support@spoofsuite.com">support@spoofsuite.com</a></li>
+        </ul>
+    </div>
+</body>
+</html>

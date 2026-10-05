@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit & Debit Cards</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8fafc; }
+        h1 {
+            color: #2d3748;
+            margin-top: 60px;
+            text-shadow: 0 2px 8px rgba(44, 82, 130, 0.12);
+            text-align: center;
+        }
+        h2 { margin-top: 32px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+        th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; }
+        th { background: #2b6cb0; color: #fff; }
+        .verified { color: green; font-weight: bold; }
+        .not-verified { color: #888; }
+        .price { color: #3182ce; font-weight: bold; }
+        .pagination { margin: 16px 0; text-align: center; }
+        .pagination a {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            background: #bee3f8;
+            color: #222;
+            text-decoration: none;
+        }
+        .pagination a.active {
+            background: #2b6cb0;
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Cards Suite</h1>
+
+    <h2>Debit Cards</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Card Number</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Bank</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Address</th>
+                <th>Holder Name</th>
+                <th>Phone</th>
+                <th>SSN</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Email Pass</th>
+                <th>Acc #</th>
+                <th>Routine #</th>
+                <th>Bank Username</th>
+                <th>Bank Password</th>
+                <th>RDP Log</th>
+                <th>Note</th>
+                <th>Balance</th>
+                <th>Price</th>
+                <th>Verified</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in debit_cards %}
+            <tr>
+                <td>{{ card.credit_card_number }}</td>
+                <td>{{ card.card_type }}</td>
+                <td>{{ card.card_category }}</td>
+                <td>{{ card.issuing_bank }}</td>
+                <td>{{ card.country }}</td>
+                <td>{{ card.state }}</td>
+                <td>{{ card.city }}</td>
+                <td>{{ card.zip }}</td>
+                <td>{{ card.address }}</td>
+                <td>{{ card.credit_card_holder_name }}</td>
+                <td>{{ card.phone or 'N/A' }}</td>
+                <td>{{ card.ssn or 'N/A' }}</td>
+                <td>{{ card.dob or 'N/A' }}</td>
+                <td>{{ card.email }}</td>
+                <td>{{ card.email_pass }}</td>
+                <td>{{ card.acc_number }}</td>
+                <td>{{ card.routine_number }}</td>
+                <td>{{ card.bank_username }}</td>
+                <td>{{ card.bank_password }}</td>
+                <td>{{ card.rdp_log }}</td>
+                <td>{{ card.note }}</td>
+                <td>{{ card.balance }}</td>
+                <td class="price">${{ card.price }}</td>
+                <td>
+                    {% if card.is_verified %}
+                        <span class="verified">✔️</span>
+                    {% else %}
+                        <span class="not-verified">❌</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}">Previous</a>
+        {% endif %}
+        Page {{ page }} of {{ total_debit_pages }}
+        {% if page < total_debit_pages %}
+            <a href="?page={{ page + 1 }}">Next</a>
+        {% endif %}
+    </div>
+
+    <h2>Credit Cards</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Card Number</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Bank</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Address</th>
+                <th>Holder Name</th>
+                <th>Phone</th>
+                <th>SSN</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Email Pass</th>
+                <th>Acc #</th>
+                <th>Routine #</th>
+                <th>Bank Username</th>
+                <th>Bank Password</th>
+                <th>RDP Log</th>
+                <th>Note</th>
+                <th>Balance</th>
+                <th>Price</th>
+                <th>Verified</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in credit_cards %}
+            <tr>
+                <td>{{ card.credit_card_number }}</td>
+                <td>{{ card.card_type }}</td>
+                <td>{{ card.card_category }}</td>
+                <td>{{ card.issuing_bank }}</td>
+                <td>{{ card.country }}</td>
+                <td>{{ card.state }}</td>
+                <td>{{ card.city }}</td>
+                <td>{{ card.zip }}</td>
+                <td>{{ card.address }}</td>
+                <td>{{ card.credit_card_holder_name }}</td>
+                <td>{{ card.phone or 'N/A' }}</td>
+                <td>{{ card.ssn or 'N/A' }}</td>
+                <td>{{ card.dob or 'N/A' }}</td>
+                <td>{{ card.email }}</td>
+                <td>{{ card.email_pass }}</td>
+                <td>{{ card.acc_number }}</td>
+                <td>{{ card.routine_number }}</td>
+                <td>{{ card.bank_username }}</td>
+                <td>{{ card.bank_password }}</td>
+                <td>{{ card.rdp_log }}</td>
+                <td>{{ card.note }}</td>
+                <td>{{ card.balance }}</td>
+                <td class="price">${{ card.price }}</td>
+                <td>
+                    {% if card.is_verified %}
+                        <span class="verified">✔️</span>
+                    {% else %}
+                        <span class="not-verified">❌</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}">Previous</a>
+        {% endif %}
+        Page {{ page }} of {{ total_credit_pages }}
+        {% if page < total_credit_pages %}
+            <a href="?page={{ page + 1 }}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>

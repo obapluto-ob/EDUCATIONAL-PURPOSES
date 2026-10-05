@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Cards - Spoof Suite</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+        
+        .cards-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            color: #10b981;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 10px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .card-item {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-item:hover {
+            transform: translateY(-5px);
+            border-color: #10b981;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+        }
+        
+        .card-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+        
+        .card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .card-detail {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-detail strong {
+            color: #94a3b8;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: #059669;
+        }
+        
+        .generate-button {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .generate-button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ url_for('main.index') }}" class="back-button">← Back to Dashboard</a>
+            <a href="{{ url_for('main.generate_new_cards') }}" class="generate-button">🔄 Generate New Cards</a>
+            <h1>Generated Payment Cards</h1>
+            <p>Real-time generated credit and debit cards with valid data</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">{{ total_credit }}</div>
+                <div>Credit Cards</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ total_debit }}</div>
+                <div>Debit Cards</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ total_credit + total_debit }}</div>
+                <div>Total Cards</div>
+            </div>
+        </div>
+        
+        {% if credit_cards %}
+        <div class="cards-section">
+            <h2 class="section-title">💳 Credit Cards (Showing first 50)</h2>
+            <div class="cards-grid">
+                {% for card in credit_cards %}
+                <div class="card-item">
+                    <div class="card-number">{{ card.card_number }}</div>
+                    <div class="card-details">
+                        <div class="card-detail">
+                            <strong>Name:</strong> <span>{{ card.cardholder_name }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Expiry:</strong> <span>{{ card.expiry }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>CVV:</strong> <span>{{ card.cvv }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Bank:</strong> <span>{{ card.issuer }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Level:</strong> <span>{{ card.level }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Balance:</strong> <span>${{ "%.2f"|format(card.balance) }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Price:</strong> <span>${{ "%.2f"|format(card.price) }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Country:</strong> <span>{{ card.country }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if debit_cards %}
+        <div class="cards-section">
+            <h2 class="section-title">💳 Debit Cards (Showing first 50)</h2>
+            <div class="cards-grid">
+                {% for card in debit_cards %}
+                <div class="card-item">
+                    <div class="card-number">{{ card.card_number }}</div>
+                    <div class="card-details">
+                        <div class="card-detail">
+                            <strong>Name:</strong> <span>{{ card.cardholder_name }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Expiry:</strong> <span>{{ card.expiry }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>CVV:</strong> <span>{{ card.cvv }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Bank:</strong> <span>{{ card.issuer }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Level:</strong> <span>{{ card.level }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Balance:</strong> <span>${{ "%.2f"|format(card.balance) }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Price:</strong> <span>${{ "%.2f"|format(card.price) }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <strong>Country:</strong> <span>{{ card.country }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if not credit_cards and not debit_cards %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <h2>No Cards Generated Yet</h2>
+            <p>Click "Generate New Cards" to create payment cards</p>
+            <a href="{{ url_for('main.generate_new_cards') }}" class="generate-button">🔄 Generate Cards Now</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

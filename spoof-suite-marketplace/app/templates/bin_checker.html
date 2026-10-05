@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BIN Checker</title>
+    <style>
+        body {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXAEL8_tficM0YUpvEQBcKGm2ujsH_WPRvcg&s');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: Arial, sans-serif;
+            background-color: #181a20;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: rgba(24,26,32,0.55);
+            border-radius: 10px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(44,82,130,0.10);
+            position: relative;
+            z-index: 2;
+            color: #bee3f8;
+            backdrop-filter: blur(2px);
+        }
+        .error { color: #e53e3e; font-weight: bold; margin-bottom: 12px;}
+        .result { background: rgba(44,82,130,0.65); color: #fff; padding: 16px; border-radius: 8px; margin-top: 18px;}
+        label { font-weight: bold; }
+        input[type="text"] { padding: 8px 12px; border-radius: 4px; border: 1px solid #bee3f8; font-size: 16px; width: 100%; margin-bottom: 12px; background: rgba(44,82,130,0.12); color: #bee3f8;}
+        button, .back-btn { padding: 10px 18px; background: #bee3f8; color: #2b6cb0; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;}
+        button:hover, .back-btn:hover { background: #2c5282; color: #fff;}
+        .header-text {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 38px;
+            color: #fff;
+            z-index: 10;
+            pointer-events: none;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px #181a20;
+        }
+        .svg-bg {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.28;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .back-btn {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            margin-bottom: 0;
+            display: inline-block;
+            z-index: 20;
+        }
+        .loader {
+            margin: 24px auto;
+            text-align: center;
+        }
+        /* Mobile Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 98vw;
+                margin: 16px auto;
+                padding: 16px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .header-text {
+                font-size: 22px;
+                bottom: 12px;
+            }
+            .svg-bg {
+                width: 60px;
+                height: 60px;
+                top: 12px;
+            }
+            input[type="text"], button {
+                font-size: 15px;
+                padding: 10px 10px;
+            }
+            .result {
+                padding: 10px;
+                font-size: 15px;
+            }
+            .back-btn {
+                position: static;
+                margin-bottom: 12px;
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-btn">&#8592; Back</a>
+    <div class="container">
+        <h2>BIN Checker</h2>
+        <form method="post">
+            <label for="bin">Enter BIN (first 6 digits):</label>
+            <input type="text" name="bin" id="bin" value="{{ bin_input }}">
+            <button type="submit">Check BIN</button>
+        </form>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        {% if result %}
+            <div class="result">
+                <strong>BIN Info:</strong><br>
+                {% for key, value in result.items() %}
+                    <div><b>{{ key|capitalize }}:</b> {{ value }}</div>
+                {% endfor %}
+                <button onclick="copyBinInfo()" style="margin-top:16px; float:right;" class="copy-btn">Copy BIN Info</button>
+            </div>
+            <div style="font-size:32px; margin-bottom:8px;">
+                {% if result.error %}
+                    <span style="color:#e53e3e;">&#10060;</span>
+                {% else %}
+                    <span style="color:#38d39f;">&#10004;</span>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div style="margin-top: 18px; color: #bee3f8; font-size: 15px; opacity: 0.85;">
+            <em>Tip: verify your card Bin details online. Use BIN lookup for informational purposes only.</em>
+        </div>
+        {% if loading %}
+        <div class="loader">
+          <svg width="48" height="48" viewBox="0 0 50 50">
+            <circle cx="25" cy="25" r="20" fill="none" stroke="#bee3f8" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.4 31.4" transform="rotate(-90 25 25)">
+              <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+        {% endif %}
+    </div>
+    <div class="svg-bg">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="#bee3f8"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-7V8a6 6 0 0 0-12 0v2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-8-2a4 4 0 0 1 8 0v2H8V8z"/></svg>
+    </div>
+    <div class="header-text">Secure Card Lookup</div>
+    <script>
+    function copyBinInfo() {
+        var text = document.querySelector('.result').innerText;
+        navigator.clipboard.writeText(text);
+        alert('BIN info copied!');
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* Enhanced Card Display Styles */
+
+/* Status badges */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-badge.verified {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-badge.unverified {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* Card brand styling */
+.card-brand {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-brand img {
+    width: 24px;
+    height: auto;
+}
+
+/* Table enhancements */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Action buttons */
+.action-btns {
+    display: flex;
+    gap: 5px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Country flags */
+.country-flag {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+/* Card level styling */
+.card-level {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.card-level.traditional {
+    color: #6c757d;
+}
+
+.card-level.gold {
+    color: #ffd700;
+}
+
+.card-level.platinum {
+    color: #e5e4e2;
+}
+
+.card-level.world {
+    color: #007bff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    table th,
+    table td {
+        padding: 8px 4px;
+    }
+
+    .action-btns {
+        flex-direction: column;
+    }
+}

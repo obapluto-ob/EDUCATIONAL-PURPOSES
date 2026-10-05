@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #e2e8f0;
+    }
+    .glass-card {
+      max-width: 540px;
+      margin: 48px auto 0 auto;
+      padding: 32px 22px 24px 22px;
+      border-radius: 18px;
+      background: rgba(30, 41, 59, 0.38);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      position: relative;
+    }
+    .glass-card h1 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #bee3f8;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #0006;
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 6px;
+      margin-bottom: 18px;
+      table-layout: fixed;
+      word-break: break-word;
+    }
+    .cart-table th, .cart-table td {
+      padding: 8px 7px;
+      border: none;
+      border-radius: 7px;
+      background: rgba(17, 24, 39, 0.55);
+      color: #e2e8f0;
+      font-size: 15px;
+      text-align: center;
+      word-break: break-word;
+    }
+    .cart-table th {
+      background: rgba(190,227,248,0.18);
+      color: #90cdf4;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px #222;
+    }
+    .cart-table td.actions {
+      background: transparent;
+    }
+    .btn {
+      padding: 7px 16px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #38a169 60%, #22543d 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 0 2px;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.18s, color 0.18s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-remove {
+      background: linear-gradient(90deg, #f56565 60%, #c53030 100%);
+      color: #fff;
+    }
+    .btn-clear {
+      background: linear-gradient(90deg, #f6ad55 60%, #c05621 100%);
+      color: #222;
+    }
+    .btn:hover {
+      filter: brightness(1.12);
+      color: #bee3f8;
+    }
+    .cart-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .cart-summary {
+      text-align: right;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fbd38d;
+      margin-bottom: 10px;
+      margin-top: 8px;
+      text-shadow: 0 1px 2px #222;
+    }
+    .empty-cart {
+      text-align: center;
+      color: #f56565;
+      font-size: 1.1rem;
+      margin: 32px 0 18px 0;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px #222;
+    }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .top-links a {
+      background: rgba(30,41,59,0.55);
+      color: #bee3f8;
+      border: 1px solid #bee3f8;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.18s, color 0.18s;
+    }
+    .top-links a:hover {
+      background: #38a169;
+      color: #fff;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.14);
+      border-radius: 10px;
+      padding: 5px 8px;
+      max-width: 180px;
+      font-size: 11px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(44,82,130,0.10);
+      margin-bottom: 0;
+    }
+    .user-profile div {
+      display: flex;
+      flex-direction: column;
+    }
+    .user-profile .wallet-badge {
+      background: linear-gradient(90deg,#23272f 60%,#38a169 100%);
+      color: #bee3f8;
+      padding: 1px 4px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(44,82,130,0.10);
+      letter-spacing: 0.3px;
+      border: 1px solid #38a169;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-shadow: 1px 1px 2px #222;
+    }
+    .user-profile .wallet-badge span {
+      margin-left: 3px;
+      color: #fff;
+      background: rgba(56,161,105,0.18);
+      padding: 1px 4px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    /* Mobile responsiveness */
+    @media (max-width: 700px) {
+      .glass-card {
+        max-width: 99vw;
+        margin: 12vw 1vw 0 1vw;
+        padding: 10vw 2vw 6vw 2vw;
+      }
+      .cart-table th, .cart-table td {
+        font-size: 12px;
+        padding: 5px 2px;
+      }
+      .btn, .btn-clear, .btn-remove {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+      .cart-summary { font-size: 1rem; }
+      .user-profile { font-size: 10px; padding: 4px 5px; max-width: 98vw;}
+      .user-profile .wallet-badge { font-size: 9px; padding: 1px 3px;}
+      .top-links { flex-direction: column; gap: 6px; }
+      .cart-actions { flex-direction: column; gap: 6px; align-items: flex-end; }
+      .cart-table { font-size: 11px; }
+      .glass-card h1 { font-size: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+      .glass-card {
+        padding: 4vw 1vw 4vw 1vw;
+      }
+      .user-profile { max-width: 95vw; }
+      .cart-table th, .cart-table td { font-size: 10px; }
+      .btn, .btn-clear, .btn-remove { font-size: 10px; padding: 4px 6px; }
+    }
+    /* Make table horizontally scrollable on very small screens */
+    .cart-table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- User details at top right, OUTSIDE the glass-card -->
+  <div style="position:fixed; top:12px; right:10px; z-index:10; min-width:140px;">
+    <div class="user-profile" style="display:flex;align-items:center;gap:8px;padding:6px 8px;max-width:260px;font-size:11px;background:rgba(0,0,0,0.22);border-radius:10px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;min-width:80px;">
+        <span style="font-weight:600; font-size:12px; color:#bee3f8;">{{ current_user.username }}</span>
+        <div style="font-size:10px; color:#e2e8f0;">Email: {{ current_user.email }}</div>
+      </div>
+      <span class="wallet-badge"
+        style="background:#38a169;color:#fff;padding:4px 12px;border-radius:10px;font-size:13px;font-weight:700;white-space:nowrap;min-width:90px;box-shadow:0 1px 3px #0002; margin-left:4px;display:inline-block;text-align:center;">
+        Balance: ${{ "%.2f"|format(current_user.wallet_balance or 0.0) }}
+      </span>
+    </div>
+  </div>
+  <div class="glass-card" style="position:relative;">
+    <div class="top-links">
+      <a href="{{ url_for('main.index') }}">&larr; Dashboard</a>
+      <a href="{{ url_for('cart.view_cart') }}">Refresh Cart</a>
+    </div>
+    <h1>
+      <svg width="28" height="28" fill="#bee3f8" style="vertical-align:middle;margin-right:7px;" viewBox="0 0 24 24">
+        <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-12.016-2l1.72-8h13.296l1.72 8h-16.736zm15.016-10v2h-16v-2h2.016l1.72-8h8.528l1.72 8h2.016zm-2.016 2h-12l-1.72 8h15.44l-1.72-8z"/>
+      </svg>
+      Your Cart
+    </h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul style="list-style:none;padding:0;">
+          {% for category, message in messages %}
+            <li style="color: {% if category == 'danger' %}#f56565{% elif category == 'success' %}#38a169{% else %}#bee3f8{% endif %};font-weight:600;margin-bottom:4px;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if cart and cart|length > 0 %}
+      <div class="cart-table-responsive">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Card Number</th>
+            <th>Type</th>
+            <th>Country</th>
+            <th>Bank</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th class="actions">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+          <tr>
+            <td>
+              {{ item.card_number[:4] }} **** **** {{ item.card_number[-4:] }}
+            </td>
+            <td>{{ item.card_type }}</td>
+            <td>{{ item.country }}</td>
+            <td>{{ item.bank }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ "%.2f"|format(item.price) }}</td>
+            <td class="actions">
+              <form method="post" action="{{ url_for('cart.remove_from_cart') }}">
+                <input type="hidden" name="card_number" value="{{ item.card_number }}">
+                <input type="hidden" name="card_type" value="{{ item.card_type }}">
+                <button type="submit" class="btn btn-remove" title="Remove">&times;</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      <div class="cart-summary">
+        Total: ${{ "%.2f"|format(total_amount) }}
+      </div>
+      <div class="cart-actions">
+        <form method="get" action="{{ url_for('cart.clear_cart') }}" style="display:inline;">
+          <button type="submit" class="btn btn-clear">Clear Cart</button>
+        </form>
+        <a href="{{ url_for('cart.checkout') }}" class="btn">Checkout</a>
+      </div>
+    {% else %}
+      <div class="empty-cart">
+        <svg width="32" height="32" fill="#f56565" style="vertical-align:middle;margin-bottom:2px;" viewBox="0 0 24 24">
+          <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-12.016-2l1.72-8h13.296l1.72 8h-16.736zm15.016-10v2h-16v-2h2.016l1.72-8h8.528l1.72 8h2.016zm-2.016 2h-12l-1.72 8h15.44l-1.72-8z"/>
+        </svg>
+        Your cart is empty.<br>Add a card to proceed to checkout.
+      </div>
+    {% endif %}
+
+  </div>
+</body>
+</html>

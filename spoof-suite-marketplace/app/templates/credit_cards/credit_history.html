@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase History - Credit & Debit Cards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            color: #bee3f8;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .container { max-width: 1400px; margin: 20px auto; background: #23272f; border-radius: 16px; padding: 24px; box-shadow: 0 8px 32px #0005; }
+        h2 { color: #90cdf4; text-align: center; margin-bottom: 24px; }
+        .stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .stat-box { background: #2d3748; padding: 15px 20px; border-radius: 8px; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: bold; color: #ffd700; }
+        .stat-label { font-size: 12px; color: #a0aec0; margin-top: 5px; }
+
+        /* Enhanced table styling */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 11px;
+        }
+        th {
+            background: #2b6cb0;
+            color: #fff;
+            padding: 12px 6px;
+            text-align: center;
+            font-size: 10px;
+            white-space: nowrap;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        td {
+            padding: 8px 6px;
+            text-align: center;
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            white-space: nowrap;
+        }
+        tr { background: #23272f; }
+        tr:hover { background: #2c5282; }
+
+        /* Card type badges */
+        .card-type-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .credit-badge { background: #38a169; color: white; }
+        .debit-badge { background: #3182ce; color: white; }
+
+        /* Status badges */
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .verified-badge { background: #48bb78; color: white; }
+        .unverified-badge { background: #ed8936; color: white; }
+
+        /* Brand logos */
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+        .visa-logo { color: #1a365d; background: #90cdf4; padding: 2px 6px; border-radius: 3px; }
+        .mastercard-logo { color: white; background: #e53e3e; padding: 2px 6px; border-radius: 3px; }
+        .amex-logo { color: white; background: #2d3748; padding: 2px 6px; border-radius: 3px; }
+        .discover-logo { color: white; background: #ed8936; padding: 2px 6px; border-radius: 3px; }
+
+        .no-data { color: #e53e3e; font-weight: bold; text-align: center; font-size: 16px; }
+        .btn-back { display: inline-block; background: #38a169; color: #fff; border: none; border-radius: 6px; font-size: 15px; padding: 8px 18px; cursor: pointer; font-weight: bold; margin-top: 12px; text-decoration: none; }
+        .btn-back:hover { background: #276749; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ page_title or "Purchase History - Credit & Debit Cards" }}</h2>
+
+        <!-- Filter Navigation -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="{{ url_for('credit_cards.card_history') }}" class="btn-back" style="margin: 0 5px;">All Cards</a>
+            <a href="{{ url_for('credit_cards.credit_history') }}" class="btn-back" style="margin: 0 5px;">Credit Only</a>
+            <a href="{{ url_for('credit_cards.debit_history') }}" class="btn-back" style="margin: 0 5px;">Debit Only</a>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">{{ purchased_cards|length }}</div>
+                <div class="stat-label">Total Purchased</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ purchased_cards|selectattr("card_type", "equalto", "credit")|list|length }}</div>
+                <div class="stat-label">Credit Cards</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ purchased_cards|selectattr("card_type", "equalto", "debit")|list|length }}</div>
+                <div class="stat-label">Debit Cards</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ purchased_cards|selectattr("note", "equalto", "verified")|list|length }}</div>
+                <div class="stat-label">Verified</div>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Card Number</th>
+                <th>Type</th>
+                <th>CVV</th>
+                <th>Expiry</th>
+                <th>Brand</th>
+                <th>Level</th>
+                <th>Holder Name</th>
+                <th>Bank</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>SSN</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Email Pass</th>
+                <th>Balance</th>
+                <th>Validity</th>
+                <th>Price Paid</th>
+                <th>Status</th>
+            </tr>
+            {% for card in purchased_cards %}
+            <tr>
+                <td style="color: #90cdf4; font-weight: bold;">{{ loop.index }}</td>
+                <td style="font-family: monospace; color: #ffd700;">{{ card.card_number }}</td>
+
+                <!-- Card Type Badge -->
+                <td>
+                    <span class="card-type-badge {% if card.card_type == 'credit' %}credit-badge{% else %}debit-badge{% endif %}">
+                        {{ card.card_type|upper }}
+                    </span>
+                </td>
+
+                <td style="font-family: monospace; color: #48bb78;">{{ card.cvv }}</td>
+                <td style="font-family: monospace; color: #48bb78;">{{ card.expiry }}</td>
+
+                <!-- Enhanced Brand Display -->
+                <td>
+                    <div class="brand-logo">
+                        {% if card.brand.lower() == 'visa' %}
+                            <span class="visa-logo">VISA</span>
+                        {% elif card.brand.lower() == 'mastercard' %}
+                            <span class="mastercard-logo">MC</span>
+                        {% elif card.brand.lower() == 'amex' %}
+                            <span class="amex-logo">AMEX</span>
+                        {% elif card.brand.lower() == 'discover' %}
+                            <span class="discover-logo">DISC</span>
+                        {% else %}
+                            <span style="color: #a0aec0;">{{ card.brand.upper() }}</span>
+                        {% endif %}
+                    </div>
+                </td>
+
+                <td style="color: #90cdf4;">{{ card.level or 'Standard' }}</td>
+                <td style="color: #bee3f8;">{{ card.holder_name }}</td>
+                <td style="color: #90cdf4;">{{ card.bank }}</td>
+                <td>
+                    <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/{{ card.country_flag or 'us' }}.svg"
+                         width="16" height="12" style="margin-right: 5px;">
+                    {{ card.country }}
+                </td>
+                <td style="color: #a0aec0;">{{ card.state }}</td>
+                <td style="color: #a0aec0;">{{ card.city }}</td>
+                <td style="color: #a0aec0; font-size: 10px;">{{ card.address }}</td>
+
+                <!-- Phone (Always shown for purchased cards) -->
+                <td style="color: #48bb78; font-weight: bold; font-family: monospace;">{{ card.phone }}</td>
+
+                <!-- SSN (Conditional display) -->
+                <td style="font-family: monospace;">
+                    {% if card.note == 'verified' %}
+                        <span style="color: #48bb78; font-weight: bold;">{{ card.ssn }}</span>
+                    {% else %}
+                        <span style="color: #a0aec0;">Not Available</span>
+                    {% endif %}
+                </td>
+
+                <!-- DOB (Conditional display) -->
+                <td style="font-family: monospace;">
+                    {% if card.note == 'verified' %}
+                        <span style="color: #48bb78; font-weight: bold;">{{ card.dob }}</span>
+                    {% else %}
+                        <span style="color: #a0aec0;">Not Available</span>
+                    {% endif %}
+                </td>
+
+                <td style="color: #90cdf4; font-size: 10px;">{{ card.email }}</td>
+                <td style="color: #ffd700; font-family: monospace; font-size: 10px;">{{ card.email_pass }}</td>
+
+                <!-- Balance (Conditional display) -->
+                <td>
+                    {% if card.note == 'verified' and card.balance %}
+                        <span style="color: #48bb78; font-weight: bold;">${{ "%.2f"|format(card.balance) }}</span>
+                    {% else %}
+                        <span style="color: #a0aec0;">N/A</span>
+                    {% endif %}
+                </td>
+
+                <!-- Validity Percentage -->
+                <td>
+                    {% if card.validity_percent %}
+                        <span style="color: #ffd700; font-weight: bold;">{{ card.validity_percent }}%</span>
+                    {% else %}
+                        <span style="color: #a0aec0;">N/A</span>
+                    {% endif %}
+                </td>
+
+                <td style="color: #ffd700; font-weight: bold; font-size: 12px;">${{ "%.2f"|format(card.price) }}</td>
+
+                <!-- Status Badge -->
+                <td>
+                    <span class="status-badge {% if card.note == 'verified' %}verified-badge{% else %}unverified-badge{% endif %}">
+                        {{ card.note|title }}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="22" class="no-data">No cards purchased yet. Start shopping to see your purchase history!</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Enhanced Navigation -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('credit_cards.credit_cards_home') }}" class="btn-back">Credit Cards</a>
+            <a href="{{ url_for('credit_cards.debit_cards_page') }}" class="btn-back" style="margin-left: 10px;">Debit Cards</a>
+            <a href="{{ url_for('main.index') }}" class="btn-back" style="margin-left: 10px;">Dashboard</a>
+        </div>
+
+        <!-- Purchase Summary -->
+        {% if purchased_cards %}
+        <div style="margin-top: 20px; padding: 15px; background: #2d3748; border-radius: 8px; text-align: center;">
+            <h3 style="color: #90cdf4; margin-bottom: 10px;">Purchase Summary</h3>
+            <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                <div>
+                    <span style="color: #ffd700; font-size: 18px; font-weight: bold;">
+                        ${{ "%.2f"|format(purchased_cards|sum(attribute='price')) }}
+                    </span>
+                    <div style="color: #a0aec0; font-size: 12px;">Total Spent</div>
+                </div>
+                <div>
+                    <span style="color: #48bb78; font-size: 18px; font-weight: bold;">
+                        ${{ "%.2f"|format(purchased_cards|selectattr("balance")|sum(attribute='balance') or 0) }}
+                    </span>
+                    <div style="color: #a0aec0; font-size: 12px;">Total Balance</div>
+                </div>
+                <div>
+                    <span style="color: #90cdf4; font-size: 18px; font-weight: bold;">
+                        {{ (purchased_cards|selectattr("balance")|sum(attribute='balance') or 0) / (purchased_cards|sum(attribute='price')) * 100 if purchased_cards|sum(attribute='price') > 0 else 0 }}%
+                    </span>
+                    <div style="color: #a0aec0; font-size: 12px;">ROI Ratio</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

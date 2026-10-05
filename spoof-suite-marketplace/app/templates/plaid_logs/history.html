@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .history-container {
+            background: rgba(30,41,59,0.85);
+            padding: 24px 8px;
+            border-radius: 18px;
+            max-width: 1000px;
+            margin: 32px auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            overflow-x: auto;
+        }
+        h2 {
+            color: #90cdf4;
+            text-align: center;
+            margin-bottom: 18px;
+            text-shadow: 1px 1px 8px #222;
+            font-size: 1.5em;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            min-width: 900px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+        }
+        th, td {
+            padding: 8px 6px;
+            text-align: left;
+        }
+        th {
+            background: rgba(190,227,248,0.3);
+            color: #38a169;
+            font-size: 15px;
+            border-bottom: 2px solid #38a169;
+            white-space: nowrap;
+        }
+        tr {
+            background: rgba(255,255,255,0.07);
+            transition: background 0.2s;
+        }
+        tr:hover {
+            background: rgba(56,161,105,0.13);
+        }
+        td {
+            color: #bee3f8;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .no-data {
+            color: #e53e3e;
+            font-weight: bold;
+            text-align: center;
+            font-size: 15px;
+            text-shadow: 1px 1px 6px #222;
+        }
+        .btn-back {
+            display: inline-block;
+            background: #38a169;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            padding: 8px 18px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(56,161,105,0.15);
+            transition: background 0.2s;
+        }
+        .btn-back:hover {
+            background: #276749;
+        }
+        @media (max-width: 700px) {
+            .history-container {
+                padding: 8px 2px;
+                max-width: 100vw;
+            }
+            h2 {
+                font-size: 1.1em;
+            }
+            th, td {
+                font-size: 11px;
+                padding: 4px 2px;
+            }
+            .btn-back {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <h2>Purchased Plaid Logs</h2>
+        <div class="table-responsive">
+        <table>
+            <tr>
+                <th>Log ID</th>
+                <th>Card Number</th>
+                <th>CVV</th>
+                <th>Expiration</th>
+                <th>BIN</th>
+                <th>Type</th>
+                <th>Brand</th>
+                <th>Bank</th>
+                <th>Country</th>
+                <th>Cardholder Name</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>SSN</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Email Pass</th>
+                <th>Acc Number</th>
+                <th>Routine Number</th>
+                <th>Bank Username</th>
+                <th>Bank Password</th>
+                <th>RDP Log</th>
+                <th>Balance</th>
+                <th>Price</th>
+            </tr>
+            {% for log in purchased_logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.card_number }}</td>
+                <td>{{ log.cvv }}</td>
+                <td>{{ log.expiry }}</td>
+                <td>{{ log.bin }}</td>
+                <td>{{ log.type }}</td>
+                <td>{{ log.brand }}</td>
+                <td>{{ log.bank }}</td>
+                <td>{{ log.country }}</td>
+                <td>{{ log.cardholder_name }}</td>
+                <td>{{ log.state }}</td>
+                <td>{{ log.city }}</td>
+                <td>{{ log.zip }}</td>
+                <td>{{ log.address }}</td>
+                <td>{{ log.phone }}</td>
+                <td>{{ log.ssn }}</td>
+                <td>{{ log.dob }}</td>
+                <td>{{ log.email }}</td>
+                <td>{{ log.email_pass }}</td>
+                <td>{{ log.acc_number }}</td>
+                <td>{{ log.routine_number }}</td>
+                <td>{{ log.bank_username }}</td>
+                <td>{{ log.bank_password }}</td>
+                <td>{{ log.rdp_log }}</td>
+                <td>${{ log.balance }}</td>
+                <td>${{ log.price }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="26" class="no-data">No Plaid logs purchased yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        <a href="{{ url_for('plaid_logs.index') }}" class="btn-back">&larr; Back to Plaid Logs</a>
+    </div>
+</body>
+</html>
