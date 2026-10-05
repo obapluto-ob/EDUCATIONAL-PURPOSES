@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     usdt_wallet_address = db.Column(db.String(128))
     security_question = db.Column(db.String(255))
     security_answer = db.Column(db.String(512))
+    is_admin = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -46,9 +46,11 @@ def create_app(config_name=None):
     from app.routes.bin_checker import bin_checker_bp
     from app.routes.plaid_logs import plaid_bp
     from app.routes.fullz import fullz_bp
+    from app.routes.admin import admin_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
     app.register_blueprint(payments_bp)
     app.register_blueprint(cards_bp)
     app.register_blueprint(cart_bp)

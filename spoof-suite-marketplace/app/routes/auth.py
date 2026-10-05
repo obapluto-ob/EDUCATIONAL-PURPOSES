@@ -94,6 +94,8 @@ def login():
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         login_user(user)
+        if not user.security_question or not user.security_answer:
+            return redirect(url_for('auth.setup_security'))
         return redirect(url_for('main.index'))
     flash('Invalid username or password.', 'danger')
     return redirect(url_for('auth.login'))
@@ -109,6 +111,24 @@ def logout():
 @login_required
 def back_to_dashboard():
     return redirect(url_for('main.index'))
+
+@auth_bp.route('/setup_security', methods=['GET', 'POST'])
+@login_required
+def setup_security():
+    if current_user.security_question and current_user.security_answer:
+        return redirect(url_for('main.index'))
+    if request.method == 'POST':
+        question = request.form.get('security_question', '')
+        answer = request.form.get('security_answer', '').strip().lower()
+        if not answer:
+            flash('Security answer is required.', 'warning')
+            return redirect(url_for('auth.setup_security'))
+        current_user.security_question = question
+        current_user.security_answer = generate_password_hash(answer)
+        db.session.commit()
+        flash('Security question saved!', 'success')
+        return redirect(url_for('main.index'))
+    return render_template('auth/setup_security.html', security_questions=SECURITY_QUESTIONS)
 
 @auth_bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():

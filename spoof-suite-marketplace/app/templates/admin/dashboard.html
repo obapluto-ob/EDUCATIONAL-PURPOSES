@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; }
+.topbar { background: #111; border-bottom: 1px solid #222; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.topbar h1 { color: #ff4444; font-size: 1rem; }
+.topbar a { color: #888; text-decoration: none; font-size: 0.8rem; }
+.topbar a:hover { color: #fff; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stat { background: #111; border: 1px solid #222; border-radius: 6px; padding: 16px; text-align: center; }
+.stat .num { font-size: 1.8rem; font-weight: bold; color: #00ff88; }
+.stat .label { font-size: 0.75rem; color: #666; margin-top: 4px; }
+.stat.warn .num { color: #ffaa00; }
+h2 { color: #aaa; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #1a1a1a; padding-bottom: 8px; }
+.section { margin-bottom: 36px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+th { background: #161616; color: #666; padding: 8px 10px; text-align: left; border-bottom: 1px solid #222; }
+td { padding: 8px 10px; border-bottom: 1px solid #1a1a1a; vertical-align: middle; }
+tr:hover td { background: #111; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.7rem; font-weight: bold; }
+.badge.pending { background: #332200; color: #ffaa00; }
+.badge.confirmed { background: #002211; color: #00ff88; }
+.badge.rejected { background: #220000; color: #ff4444; }
+.badge.admin { background: #220033; color: #cc88ff; }
+.btn { display: inline-block; padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 0.75rem; font-family: inherit; }
+.btn-green { background: #003311; color: #00ff88; border: 1px solid #00ff88; }
+.btn-red { background: #220000; color: #ff4444; border: 1px solid #ff4444; }
+.btn-blue { background: #001133; color: #4488ff; border: 1px solid #4488ff; }
+.btn-purple { background: #220033; color: #cc88ff; border: 1px solid #cc88ff; }
+.btn:hover { opacity: 0.8; }
+.balance-form { display: flex; gap: 6px; align-items: center; }
+.balance-form input { background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; padding: 4px 8px; border-radius: 3px; width: 80px; font-family: inherit; font-size: 0.75rem; }
+.flash { padding: 10px 14px; border-radius: 4px; margin-bottom: 16px; font-size: 0.85rem; }
+.flash.success { background: #002211; border: 1px solid #00ff88; color: #00ff88; }
+.flash.danger { background: #220000; border: 1px solid #ff4444; color: #ff4444; }
+.flash.warning { background: #221100; border: 1px solid #ffaa00; color: #ffaa00; }
+@media (max-width: 600px) { table { font-size: 0.7rem; } td, th { padding: 6px 6px; } .balance-form input { width: 60px; } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>⚡ ADMIN PANEL</h1>
+  <div style="display:flex;gap:16px;">
+    <a href="{{ url_for('main.index') }}">← Dashboard</a>
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="flash {{ cat }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <div class="stats">
+    <div class="stat"><div class="num">{{ total_users }}</div><div class="label">Total Users</div></div>
+    <div class="stat warn"><div class="num">{{ pending_deposits }}</div><div class="label">Pending Deposits</div></div>
+    <div class="stat"><div class="num">{{ total_cards }}</div><div class="label">Cards in DB</div></div>
+    <div class="stat"><div class="num">{{ purchases|length }}</div><div class="label">Recent Purchases</div></div>
+  </div>
+
+  <!-- USERS -->
+  <div class="section">
+    <h2>Users</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Balance</th><th>Role</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.username }}{% if u.is_admin %} <span class="badge admin">ADMIN</span>{% endif %}</td>
+          <td>{{ u.email }}</td>
+          <td>${{ '%.2f'|format(u.wallet_balance or 0) }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin.adjust_balance', user_id=u.id) }}" class="balance-form">
+              <input type="number" name="amount" step="0.01" placeholder="±amount">
+              <button class="btn btn-blue" type="submit">Adjust</button>
+            </form>
+          </td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap;">
+            <form method="POST" action="{{ url_for('admin.make_admin', user_id=u.id) }}">
+              <button class="btn btn-purple" type="submit">{{ 'Revoke Admin' if u.is_admin else 'Make Admin' }}</button>
+            </form>
+            {% if u.id != current_user.id %}
+            <form method="POST" action="{{ url_for('admin.delete_user', user_id=u.id) }}" onsubmit="return confirm('Delete {{ u.username }}?')">
+              <button class="btn btn-red" type="submit">Delete</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DEPOSITS -->
+  <div class="section">
+    <h2>Recent Deposits</h2>
+    <table>
+      <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Currency</th><th>TX Hash</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for d in deposits %}
+        <tr>
+          <td>{{ d.id }}</td>
+          <td>{{ d.user_id }}</td>
+          <td>${{ '%.2f'|format(d.amount) }}</td>
+          <td>{{ d.currency }}</td>
+          <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ d.tx_hash }}">{{ d.tx_hash }}</td>
+          <td><span class="badge {{ d.status }}">{{ d.status.upper() }}</span></td>
+          <td>
+            {% if d.status == 'pending' %}
+            <form method="POST" action="{{ url_for('admin.approve_deposit', deposit_id=d.id) }}" style="display:inline;">
+              <button class="btn btn-green" type="submit">Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.reject_deposit', deposit_id=d.id) }}" style="display:inline;">
+              <button class="btn btn-red" type="submit">Reject</button>
+            </form>
+            {% else %}—{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PURCHASES -->
+  <div class="section">
+    <h2>Recent Purchases</h2>
+    <table>
+      <thead><tr><th>ID</th><th>User ID</th><th>Card ID</th><th>Price</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for p in purchases %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.user_id }}</td>
+          <td>{{ p.card_id }}</td>
+          <td>${{ '%.2f'|format(p.purchase_price) }}</td>
+          <td>{{ p.purchased_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
