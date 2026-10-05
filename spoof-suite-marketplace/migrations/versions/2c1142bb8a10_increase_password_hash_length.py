@@ -17,18 +17,13 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column(
-        'credit_card',
-        sa.Column('validity_percent', sa.Integer(), nullable=True),
-    )
-    op.alter_column(
-        'user',
-        'password_hash',
-        existing_type=sa.VARCHAR(length=128),
-        type_=sa.String(length=512),
-        existing_nullable=True,
-    )
+    # validity_percent already added manually via sqlite3 — skip if exists
+    try:
+        op.add_column('credit_card', sa.Column('validity_percent', sa.Integer(), nullable=True))
+    except Exception:
+        pass
+    # password_hash resize handled at DB level — SQLite does not support ALTER COLUMN
 
 
 def downgrade():
-    op.drop_column('credit_card', 'validity_percent')
+    pass

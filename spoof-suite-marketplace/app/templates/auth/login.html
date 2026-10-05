@@ -4,144 +4,54 @@
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body {
-            background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk=');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .form-box {
-            background: rgba(0,0,0,0.18);
-            padding: 32px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 64px;
-            min-width: 280px;
-            max-width: 95vw;
-            box-sizing: border-box;
-        }
-        input, button {
-            padding: 10px 18px;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-            margin: 8px 0;
-            width: 90%;
-            max-width: 350px;
-            box-sizing: border-box;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        button {
-            background: #2b6cb0;
-            color: #fff;
-            font-weight: bold;
-            width: 95%;
-            max-width: 350px;
-        }
-        a {
-            color: #bee3f8;
-            text-decoration: underline;
-            font-size: 15px;
-            display: block;
-            margin-top: 12px;
-        }
-        img {
-            width: 70px;
-            margin-bottom: 18px;
-            border-radius: 12px;
-            max-width: 20vw;
-        }
-        @media (max-width: 600px) {
-            .form-box {
-                padding: 12px;
-                margin-top: 24px;
-                min-width: unset;
-                width: 98vw;
-            }
-            input, button {
-                font-size: 14px;
-                padding: 8px 6px;
-                max-width: 98vw;
-            }
-            img {
-                width: 50px;
-                max-width: 30vw;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            p {
-                font-size: 13px !important;
-            }
-        }
-        .toggle-btn {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 2px 10px;
-            background: #bee3f8;
-            color: #222;
-            border-radius: 6px;
-            font-size: 13px;
-            border: none;
-            cursor: pointer;
-            width: auto;
-            margin: 0;
-            z-index: 2;
-        }
+        body { background-image: url('https://media.istockphoto.com/id/912299634/photo/computer-crime-concept.jpg?s=612x612&w=0&k=20&c=JOYSw69V4tr2hvnAt3HsOEbyXAoSXYulHrh8ifqqJXk='); background-size: cover; background-repeat: no-repeat; background-position: center; color: #fff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; }
+        .form-box { background: rgba(0,0,0,0.18); padding: 32px; border-radius: 12px; display: inline-block; margin-top: 64px; min-width: 280px; max-width: 95vw; box-sizing: border-box; }
+        input, button { padding: 10px 18px; border-radius: 8px; border: none; font-size: 16px; margin: 8px 0; width: 90%; max-width: 350px; box-sizing: border-box; display: block; margin-left: auto; margin-right: auto; }
+        button { background: #2b6cb0; color: #fff; font-weight: bold; width: 95%; max-width: 350px; }
+        a { color: #bee3f8; text-decoration: underline; font-size: 15px; display: block; margin-top: 12px; }
+        .captcha-box { background: rgba(30,41,59,0.85); border: 1px solid #38a169; border-radius: 8px; padding: 12px 16px; margin: 12px auto; max-width: 350px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .captcha-box span { font-size: 18px; font-weight: bold; color: #ffd700; letter-spacing: 2px; font-family: monospace; }
+        .captcha-box input { width: 90px; margin: 0; padding: 8px 10px; font-size: 16px; text-align: center; }
+        .toggle-btn { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); padding: 2px 10px; background: #bee3f8; color: #222; border-radius: 6px; font-size: 13px; border: none; cursor: pointer; width: auto; margin: 0; z-index: 2; }
+        @media (max-width: 600px) { .form-box { padding: 12px; margin-top: 24px; width: 98vw; } input, button { font-size: 14px; padding: 8px 6px; } }
     </style>
-    <script>
-        function togglePassword(inputId, toggleBtn) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                toggleBtn.textContent = "Hide";
-            } else {
-                input.type = "password";
-                toggleBtn.textContent = "Show";
-            }
-        }
-    </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="form-box">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAtFBMVEX///8AAADsHCTxHSX7+/vc3Ny7u7s7OzszMzPoGyOoFBn2HSafEhgTAgIjBAVSUlJeXl5kZGQeHh7rBxTzhIfrAACfn5/yfoLrAA384eL+9PQuLi7V1dXCwsK4uLgTExOTk5Pv7+/tMjjwX2T6yswaGhrMzMx+fn7m5uanp6dxcXFISEhBQUGKioqjo6N4eHj96+wmJiY4BgjEFx0vBQeLEBT3tLb5wsSQEBVSCQzbGSFJCAsn80bwAAAHp0lEQVR4nO2d62LaNhiGUWJCsi41kIZmM2DcFTAYkrKetu7+72uWZGF9koxpQcXQ9/mFjZD1WCfrALRaAAAAAAAAAAAAAAAAAAAAADSUtH0Y6akFarhZsUNZjU4tsYv5wX6c9ak1qpmIBN4fgohhcmqRKtI8cX9/vDuMj5/yWJpaGfMsvL+7vjqM6295Pg5OrVJByNjnVwcKXl29+sxYeGqVCm4Z++3QLMwz8XfGOqdWqQCGF254bXJphnfvTO4uy/DhjRX6zcOlG76FYQOBIQWGTQSGFBg2ERhSYNhEYEiBYRP5pQwfniiPb63Qbx+NMA/nZPj05Q+DD1boD2aQL09nZPj4/gc+/v4RhicHhjXAsAHAsAYYNgAY1gDDBgDDGmDYAGBYw1kZPn3908QKbYX4ek4j4KvrB8qjY57m0QijPnoehiaXNxMFwxYMmwkMKTBsIjCkwLCJwJACwyYCQ8rlG17YLuird3+ZvKsIea6GVw8mVQHP1nBvYHhKLt8wY+yfww2b/O28NWOfDv+G5d3r5n5Nts0Y+/fbq8P49l8eS/vUKlWIr3Lfvz6E+4Z/mbt3lG+rL0+tsYvnIwguTi1Rw/DmMBpbBQEAAAAAAAAAAAAAAAAAAAAA4MKYrXtdneWkXLF9yY/D8nAWdsPh9mgU5oHly4BHQVbq08GSxNqb35CrBuO5cdlnX79o7tqHsF10Fyv45SaKLtlxEOZH8yK9PNxGi3XmiJXsieo4Asy8CLqSwlhQvJuIoxY5Sooj/nP06pfkgzh/HWnRRq5Yn8v3F6739Vt0PPj/AsR9HX6tbVEUOTzSwpbpHGjZYhqKPCWx8gC9MsDSedmk5YG5KGpBSYtfaltnRBarlEXkTvNypoqzaZjK9Gqx8ruTlQFC8WHtffEJL1s2pKEO6/cG5c2Myns7ItVlqN9007Bt5ciEZXOtnoXM2GKTsGi5CFoesA3b5DqiZMq0qDZJtjVrprU69YYpLYGWYeDtvyFsQ4ooPSv1Kltvk17mZqvCcFeOWIb+4Em+7eksJ6TVDlXLw3NzLJpT/kcVvILebgM562GXRDtf6LnI+50VvezA08YpZ7P9ogW44Sd4lxiL3MsKlSXT/5LD6i1csep/UuL87xo/f/GROtNSPrjIxDOZabn5WJbOgFY0y9C5n1F76HF3w156i9Z4WnM3xe0eiTS3C5eeEO0at0E3TEJHrH2tZg5chp7+Miloj/RthCPtYUwgWo1ewor+XbQ1QZemxzLMC8eMxDow8ygY0svybukntT09w7DF/88qnqsECOF5bjTVcsRhaGD3HwYrb4Z5FtITlqFqjGKppMqfvqvZNkxmVGdoGAZD4znbl+Esm5rfg7AMg0KpODkuDvXG3TAMlrfmSIEaLrJYf0rl+DLkw6OMnrIMVcOolOQR+faEacgDDPUARinlfY2x8duXocoQgwkJNKNKsi8b6yFMw74z1nhbc9fuy9JB8nFwd4dmsx0RJZEd9JnMrIddZ6xlto+c7/v53zJXv6U9jknE43d5yAsULWOmobtD1+6bc4TcbXnhOYz6U41+FE7MZ+aUTfWmc5wf0loWbOJprLdYw2VnQ+ks9aYnmOSX1d/OL+uxNwwIFSF2HKoodsXqiLb+sgAAAAAAAJwP6zDMxvbpXn66nIcYZ/nhjLwbZvaHODMeVA4DRvlLB5k2SlqHNOKC1P5kdy2T016JQzIBPuTBOw4LgRiMWhPmfBpBGwENyBC3GL654xOD14l4WTFBoEUkZmccK5/tHZ8rYtVmreQwvfL7/GKSZWMMTmQs/g2L8bU1Xe82LK4o5/airWIi5kSql496juFzcQHvhjfqjDn6EwmIo3IALIOlWmq2E2SBWPLf8YMFxUTZRDsVbI5jWLJxh+dzG6KWvBhvtK1cIZVpoucKXwsypx4Jao1kZJ86mqGcW7OCiliDnp72SsMBCSWn80SApV0EHYYin8vpWH4m9m+Y8JMD2U4Yv01jG07ofViqgifmHbOdcxzcUKRKTaCJ9u3mJ+ThC69rKrV0KrQuD1U5W4jTNT9OxIOmizLGhNeZxdC/YVvFKTJxWmM4N8tyOc15W7OsKAzlLREKXVFvZ/4Nw+3dn8viahqGz4MtsuLpM8LBqhDs162bSsOW2gjEXfLe0b+hCCefZkSFJEtrO/tDFancGBbXLgwXhrIHkmbt1k8wvGVlGy+i13sMt6HRqcs1r/r9C4WhfFLo8qTzbVveDcXl1mPJwkyryzA2IpU3aY+1fWVYNMDFjfVtmDgUVobhS5Akifz9okGQODoEbT/WXobywaN4RPVt6Fw+K3sMrS2V+et8rP5uw7ZWVjwbuhftyjGG3lvIp9vuMfJQ3K5igWcfw4QSfIchv+h0rNMhHyP9oVyKi+3Fw+83zKuiat32MTRY7G8oYn8mQaSGSi7t8YvVRms3zQ8YBtv9jX4NV45CLoYIagxkPNPIgbI1jNzTsMtcq8dHNpwSpYURWymlLmk+taViaxlb0sq4p+FyEzmK+KwfRf3ScMEPtYfjLLLoF0keTaNoY9ztYMVDlCnLsWd5Xjb5B4takvJI9PYz7Yhr0PZGpMLPXjcAAAAAAAAAAAAAAAAAAAAAfh3+B4Lg6C3NHiLuAAAAAElFTkSuQmCC" alt="Logo" style="width:80px; margin-bottom:18px; border-radius:12px;">
-    <h2>Login</h2>
-    <p style="color:#bee3f8; font-size:15px; margin-bottom:12px;">
-      Welcome back! Please enter your credentials to access your account.<br>
-      <span style="color:#ffd700;">Your security is our priority.</span>
-    </p>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash-message {{ category }}" style="color:#ff6b6b; margin-bottom:10px; font-weight:bold;">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-    <form method="post">
-      <input name="username" placeholder="Username" required><br>
-      <div style="position:relative;">
-        <input id="login_password" name="password" type="password" placeholder="Password" required>
-        <button type="button" class="toggle-btn" onclick="togglePassword('login_password', this)">Show</button>
-      </div>
-      <br>
-      <button type="submit">Login</button>
-    </form>
-    <p style="margin-top:18px; color:#ff6b6b; font-size:14px;">
-      <a href="{{ url_for('auth.reset_password_request') }}">Forgot your password?</a>
-    </p>
-    <a href="{{ url_for('auth.register') }}">Register</a>
-  </div>
+        <h2>Login</h2>
+        <p style="color:#bee3f8; font-size:14px; margin-bottom:12px;">
+            Welcome back! Enter your credentials to access your account.<br>
+            <span style="color:#ffd700;">Your security is our priority.</span>
+        </p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div style="color:#ff6b6b; margin-bottom:10px; font-weight:bold;">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form method="post">
+            <input name="username" placeholder="Username" required>
+            <div style="position:relative;">
+                <input id="login_password" name="password" type="password" placeholder="Password" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('login_password', this)">Show</button>
+            </div>
+            <div class="captcha-box">
+                <span>{{ captcha_question }} = ?</span>
+                <input type="text" name="captcha" placeholder="Answer" required autocomplete="off">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <a href="{{ url_for('auth.reset_password_request') }}">Forgot your password?</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+    </div>
+    <script>
+        function togglePassword(id, btn) {
+            var input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+            btn.textContent = input.type === "password" ? "Show" : "Hide";
+        }
+    </script>
 </body>
 </html>

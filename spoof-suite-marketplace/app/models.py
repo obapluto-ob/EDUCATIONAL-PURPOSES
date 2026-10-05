@@ -12,8 +12,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(512))
     wallet_balance = db.Column(db.Float, default=0.0)
-    btc_wallet_address = db.Column(db.String(128))      # Add this line
-    usdt_wallet_address = db.Column(db.String(128))     # Add this line
+    btc_wallet_address = db.Column(db.String(128))
+    usdt_wallet_address = db.Column(db.String(128))
+    security_question = db.Column(db.String(255))
+    security_answer = db.Column(db.String(512))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
