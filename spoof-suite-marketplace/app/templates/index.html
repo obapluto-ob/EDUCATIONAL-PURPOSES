@@ -618,6 +618,151 @@
       transform: translateY(-2px) scale(1.03);
     }
 
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px;
+      }
+
+      .header {
+        margin: 0 0 16px;
+        padding: 58px 0 0;
+      }
+
+      .header h1 {
+        margin-top: 0;
+        font-size: clamp(1.2rem, 6vw, 1.7rem);
+        letter-spacing: 1px;
+        overflow-wrap: anywhere;
+      }
+
+      .status-banner {
+        margin: 14px 0 !important;
+        padding: 14px !important;
+      }
+
+      .dashboard-actions {
+        position: relative !important;
+        inset: auto !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 8px !important;
+        margin: 0 0 14px;
+        padding: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.75);
+      }
+
+      .dashboard-actions > .btn,
+      .dashboard-actions > button {
+        min-height: 40px;
+      }
+
+      .dashboard-profile {
+        position: static !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px !important;
+        max-width: none !important;
+        margin: 0 0 20px;
+        padding: 10px 12px !important;
+      }
+
+      .dashboard-profile > div {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .dashboard-stats-heading {
+        align-items: stretch !important;
+        gap: 10px;
+        margin-bottom: 12px !important;
+      }
+
+      .dashboard-stats-heading h2 {
+        font-size: 1.15rem !important;
+      }
+
+      .dashboard-stats-heading button {
+        padding: 9px 12px !important;
+        font-size: 0.85rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .stat-card {
+        min-width: 0;
+        margin: 0;
+        padding: 14px 8px;
+      }
+
+      .stat-value {
+        font-size: clamp(1.35rem, 7vw, 1.8rem);
+        overflow-wrap: anywhere;
+      }
+
+      .stat-name {
+        font-size: 0.72rem;
+        letter-spacing: 0.2px;
+      }
+
+      .category-tabs {
+        justify-content: flex-start;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .category-tab {
+        flex: 1 1 auto;
+        min-height: 40px;
+        padding: 9px 11px;
+        text-align: center;
+      }
+
+      .data-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      .data-card {
+        min-width: 0;
+        padding: 14px 12px;
+      }
+
+      .card-header {
+        min-width: 0;
+        gap: 8px;
+      }
+
+      .card-title {
+        overflow-wrap: anywhere;
+      }
+
+      .data-table td {
+        overflow-wrap: anywhere;
+      }
+
+      #dashboard-menu-container {
+        left: 0 !important;
+        top: calc(100% + 6px) !important;
+        width: min(90vw, 350px) !important;
+        max-width: calc(100vw - 24px) !important;
+      }
+
+      #notification-panel {
+        left: 0 !important;
+        top: calc(100% + 6px) !important;
+        width: min(88vw, 320px);
+        min-width: 0 !important;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+    }
 
   </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -630,7 +775,7 @@
       <h1>SWSSMILITARIESZONE</h1>
 
       <!-- Professional Status Message -->
-      <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 800px; text-align: center; backdrop-filter: blur(5px);">
+      <div class="status-banner" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 20px; margin: 20px auto; max-width: 800px; text-align: center; backdrop-filter: blur(5px);">
         <p style="color: #10b981; font-size: 1.1rem; font-weight: 600; margin: 0 0 8px 0; letter-spacing: 0.5px;">
           <strong>MARKETPLACE STATUS - OPERATIONAL</strong>
         </p>
@@ -641,6 +786,7 @@
     </div>
   <!-- User Profile & Wallet Section (top right, horizontal) -->
   <div
+    class="dashboard-profile"
     style="position: absolute; top: 12px; right: 12px; z-index: 20; display: flex; align-items: center; gap: 8px; color: #fff; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 6px 10px; max-width: 280px; font-size: 12px; text-align: left; box-shadow: 0 2px 8px rgba(44,82,130,0.10); backdrop-filter: blur(10px);">
     <div>
       <span style="font-weight:600; font-size:12px;">{{ user_profile.full_name }}</span>
@@ -685,7 +831,7 @@
   </form>
   -->
   <!-- Add this where you want the menu to appear -->
-  <div style="position: absolute; top: 12px; left: 12px; z-index: 21; display: flex; align-items: center; gap: 8px;">
+  <div class="dashboard-actions" style="position: absolute; top: 12px; left: 12px; z-index: 21; display: flex; align-items: center; gap: 8px;">
     <!-- Menu Button -->
     <button id="menu-toggle" style="background: none; border: none; cursor: pointer; padding: 0;">
       <span style="font-size: 24px; color: #bee3f8;">&#9776;</span>
@@ -743,7 +889,7 @@
 
 
     <!-- Stats Grid with Refresh Button -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="dashboard-stats-heading" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h2 style="color: #ffd700; margin: 0; font-size: 1.5rem;">Live Statistics</h2>
       <button onclick="location.reload()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
         Refresh Statistics
