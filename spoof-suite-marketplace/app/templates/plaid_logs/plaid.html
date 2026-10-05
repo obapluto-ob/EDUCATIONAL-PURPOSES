@@ -245,21 +245,16 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <div style="position:fixed; top:16px; right:18px; z-index:20;">
-        <div class="user-profile">
-            <div>
-                <span style="font-weight:600;">{{ current_user.username }}</span>
-                <span style="font-size:13px; color:#bee3f8;">{{ current_user.email }}</span>
-            </div>
-            <span class="wallet-badge">
-                Balance:
-                <span>${{ "%.2f"|format(current_user.wallet_balance or 0.0) }}</span>
-            </span>
-        </div>
-    </div>
-    <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-bottom:18px;">
-        <a href="{{ url_for('main.index') }}" class="btn btn-back">&larr; Back to Dashboard</a>
-        <a href="{{ url_for('plaid_logs.history') }}" class="btn btn-back">Purchased History</a>
+    <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; padding:10px 14px; background:rgba(0,0,0,0.3); backdrop-filter:blur(8px); position:sticky; top:0; z-index:20; margin-bottom:12px;">
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="{{ url_for('main.index') }}" class="btn btn-back" style="font-size:13px; padding:7px 12px; margin-bottom:0;">&larr; Dashboard</a>
+        <a href="{{ url_for('plaid_logs.history') }}" class="btn btn-back" style="font-size:13px; padding:7px 12px; margin-bottom:0;">History</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span style="color:#fff; font-weight:600; font-size:13px;">{{ current_user.username }}</span>
+        <span class="wallet-badge">Balance: <span>${{ "%.2f"|format(current_user.wallet_balance or 0.0) }}</span></span>
+        <a href="/payments/" class="btn" style="font-size:12px; padding:5px 10px; margin-bottom:0;">Add Funds</a>
+      </div>
     </div>
     <h2>Plaid Logs</h2>
     <div class="notice">
