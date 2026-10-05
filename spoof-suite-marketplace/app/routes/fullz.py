@@ -108,9 +108,12 @@ def generate_fullz(n=10):
         })
     return fullz_list
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
+
 def get_daily_fullz():
     today = date.today().isoformat()
-    cache_file = f"data/fullz_{today}.json"
+    os.makedirs(BASE_DIR, exist_ok=True)
+    cache_file = os.path.join(BASE_DIR, f"fullz_{today}.json")
     if os.path.exists(cache_file):
         with open(cache_file) as f:
             return json.load(f)
@@ -137,7 +140,7 @@ def fullz_usa():
         page=page,
         total_pages=total_pages,
         username=current_user.username,
-        user_balance=getattr(current_user, 'balance', 0)
+        user_balance=current_user.wallet_balance or 0
     )
 
 @fullz_bp.route('/fullz-usa/next')
