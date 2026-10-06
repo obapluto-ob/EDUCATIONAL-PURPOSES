@@ -24,6 +24,7 @@ def create_app(config_name=None):
     db.init_app(app)
     with app.app_context():
         from . import models
+        from .models import FireSale
 
     migrate = Migrate(app, db)
     mail.init_app(app)

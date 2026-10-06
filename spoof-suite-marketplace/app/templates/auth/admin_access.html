@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Access</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+.card { background: #111; border: 1px solid #333; border-radius: 8px; padding: 36px; width: 100%; max-width: 360px; }
+h2 { color: #ff4444; margin-bottom: 24px; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; }
+label { display: block; font-size: 0.78rem; color: #666; margin-bottom: 6px; }
+input { width: 100%; background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; padding: 10px 12px; border-radius: 4px; font-family: inherit; font-size: 0.9rem; margin-bottom: 16px; }
+input:focus { outline: none; border-color: #ff4444; }
+button { width: 100%; background: #ff4444; color: #fff; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+button:hover { background: #cc2222; }
+.flash { padding: 10px; border-radius: 4px; margin-bottom: 16px; font-size: 0.82rem; background: #220000; border: 1px solid #ff4444; color: #ff8888; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>⚡ Admin Access</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}
+  {% endwith %}
+  <form method="POST">
+    <label>Access Key</label>
+    <input type="password" name="key" placeholder="Enter access key" required autofocus>
+    <button type="submit">Enter</button>
+  </form>
+</div>
+</body>
+</html>

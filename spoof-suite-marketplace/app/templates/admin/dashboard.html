@@ -9,14 +9,15 @@
 body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; }
 .topbar { background: #111; border-bottom: 1px solid #222; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
 .topbar h1 { color: #ff4444; font-size: 1rem; }
-.topbar a { color: #888; text-decoration: none; font-size: 0.8rem; }
+.topbar a { color: #888; text-decoration: none; font-size: 0.8rem; margin-left: 16px; }
 .topbar a:hover { color: #fff; }
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 28px; }
 .stat { background: #111; border: 1px solid #222; border-radius: 6px; padding: 16px; text-align: center; }
 .stat .num { font-size: 1.8rem; font-weight: bold; color: #00ff88; }
-.stat .label { font-size: 0.75rem; color: #666; margin-top: 4px; }
 .stat.warn .num { color: #ffaa00; }
+.stat.fire .num { color: #ff4444; }
+.stat .label { font-size: 0.75rem; color: #666; margin-top: 4px; }
 h2 { color: #aaa; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #1a1a1a; padding-bottom: 8px; }
 .section { margin-bottom: 36px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
@@ -27,12 +28,12 @@ tr:hover td { background: #111; }
 .badge.pending { background: #332200; color: #ffaa00; }
 .badge.confirmed { background: #002211; color: #00ff88; }
 .badge.rejected { background: #220000; color: #ff4444; }
-.badge.admin { background: #220033; color: #cc88ff; }
+.badge.flagged { background: #220022; color: #ff88ff; }
 .btn { display: inline-block; padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 0.75rem; font-family: inherit; }
 .btn-green { background: #003311; color: #00ff88; border: 1px solid #00ff88; }
 .btn-red { background: #220000; color: #ff4444; border: 1px solid #ff4444; }
 .btn-blue { background: #001133; color: #4488ff; border: 1px solid #4488ff; }
-.btn-purple { background: #220033; color: #cc88ff; border: 1px solid #cc88ff; }
+.btn-orange { background: #221100; color: #ff8800; border: 1px solid #ff8800; }
 .btn:hover { opacity: 0.8; }
 .balance-form { display: flex; gap: 6px; align-items: center; }
 .balance-form input { background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; padding: 4px 8px; border-radius: 3px; width: 80px; font-family: inherit; font-size: 0.75rem; }
@@ -40,15 +41,21 @@ tr:hover td { background: #111; }
 .flash.success { background: #002211; border: 1px solid #00ff88; color: #00ff88; }
 .flash.danger { background: #220000; border: 1px solid #ff4444; color: #ff4444; }
 .flash.warning { background: #221100; border: 1px solid #ffaa00; color: #ffaa00; }
-@media (max-width: 600px) { table { font-size: 0.7rem; } td, th { padding: 6px 6px; } .balance-form input { width: 60px; } }
+.firesale-box { background: #111; border: 1px solid #ff4444; border-radius: 6px; padding: 20px; margin-bottom: 28px; }
+.firesale-box h2 { color: #ff4444; border-color: #330000; }
+.firesale-active { background: #1a0000; border: 1px solid #ff4444; border-radius: 4px; padding: 12px; margin-bottom: 12px; color: #ff8888; font-size: 0.85rem; }
+.firesale-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+.firesale-form label { font-size: 0.75rem; color: #888; display: block; margin-bottom: 4px; }
+.firesale-form input { background: #1a1a1a; border: 1px solid #333; color: #e0e0e0; padding: 6px 10px; border-radius: 3px; width: 80px; font-family: inherit; font-size: 0.85rem; }
+@media (max-width: 600px) { table { font-size: 0.7rem; } td, th { padding: 6px; } .balance-form input { width: 60px; } }
 </style>
 </head>
 <body>
 <div class="topbar">
   <h1>⚡ ADMIN PANEL</h1>
-  <div style="display:flex;gap:16px;">
+  <div>
     <a href="{{ url_for('main.index') }}">← Dashboard</a>
-    <a href="{{ url_for('auth.logout') }}">Logout</a>
+    <a href="{{ url_for('auth.admin_logout') }}">Logout</a>
   </div>
 </div>
 
@@ -64,35 +71,58 @@ tr:hover td { background: #111; }
     <div class="stat warn"><div class="num">{{ pending_deposits }}</div><div class="label">Pending Deposits</div></div>
     <div class="stat"><div class="num">{{ total_cards }}</div><div class="label">Cards in DB</div></div>
     <div class="stat"><div class="num">{{ purchases|length }}</div><div class="label">Recent Purchases</div></div>
+    <div class="stat fire"><div class="num">{{ '🔥 ON' if active_sale else 'OFF' }}</div><div class="label">Fire Sale</div></div>
+  </div>
+
+  <!-- FIRE SALE -->
+  <div class="firesale-box section">
+    <h2>🔥 Fire Sale Control</h2>
+    {% if active_sale %}
+    <div class="firesale-active">
+      Active: <strong>{{ active_sale.discount_percent }}% OFF</strong> — 
+      ends at {{ active_sale.ends_at.strftime('%H:%M:%S UTC') }} — 
+      <span id="fs-countdown"></span>
+    </div>
+    <form method="POST" action="{{ url_for('admin.stop_firesale') }}">
+      <button class="btn btn-red" type="submit">⛔ Stop Fire Sale</button>
+    </form>
+    {% else %}
+    <form method="POST" action="{{ url_for('admin.start_firesale') }}" class="firesale-form">
+      <div>
+        <label>Discount %</label>
+        <input type="number" name="discount" value="30" min="5" max="80">
+      </div>
+      <div>
+        <label>Duration (mins)</label>
+        <input type="number" name="duration" value="10" min="1" max="60">
+      </div>
+      <button class="btn btn-orange" type="submit">🔥 Start Fire Sale</button>
+    </form>
+    {% endif %}
   </div>
 
   <!-- USERS -->
   <div class="section">
     <h2>Users</h2>
     <table>
-      <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Balance</th><th>Role</th><th>Actions</th></tr></thead>
+      <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Balance</th><th>Adjust Balance</th><th>Actions</th></tr></thead>
       <tbody>
         {% for u in users %}
         <tr>
           <td>{{ u.id }}</td>
-          <td>{{ u.username }}{% if u.is_admin %} <span class="badge admin">ADMIN</span>{% endif %}</td>
+          <td>{{ u.username }}</td>
           <td>{{ u.email }}</td>
           <td>${{ '%.2f'|format(u.wallet_balance or 0) }}</td>
           <td>
             <form method="POST" action="{{ url_for('admin.adjust_balance', user_id=u.id) }}" class="balance-form">
-              <input type="number" name="amount" step="0.01" placeholder="±amount">
-              <button class="btn btn-blue" type="submit">Adjust</button>
+              <input type="number" name="amount" step="0.01" placeholder="±amt">
+              <button class="btn btn-blue" type="submit">Set</button>
             </form>
           </td>
-          <td style="display:flex;gap:6px;flex-wrap:wrap;">
-            <form method="POST" action="{{ url_for('admin.make_admin', user_id=u.id) }}">
-              <button class="btn btn-purple" type="submit">{{ 'Revoke Admin' if u.is_admin else 'Make Admin' }}</button>
-            </form>
-            {% if u.id != current_user.id %}
-            <form method="POST" action="{{ url_for('admin.delete_user', user_id=u.id) }}" onsubmit="return confirm('Delete {{ u.username }}?')">
+          <td>
+            <form method="POST" action="{{ url_for('admin.delete_user', user_id=u.id) }}" onsubmit="return confirm('Delete {{ u.username }}?')" style="display:inline;">
               <button class="btn btn-red" type="submit">Delete</button>
             </form>
-            {% endif %}
           </td>
         </tr>
         {% endfor %}
@@ -104,7 +134,7 @@ tr:hover td { background: #111; }
   <div class="section">
     <h2>Recent Deposits</h2>
     <table>
-      <thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Currency</th><th>TX Hash</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>ID</th><th>User ID</th><th>Amount</th><th>Currency</th><th>TX Hash</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>
         {% for d in deposits %}
         <tr>
@@ -112,7 +142,7 @@ tr:hover td { background: #111; }
           <td>{{ d.user_id }}</td>
           <td>${{ '%.2f'|format(d.amount) }}</td>
           <td>{{ d.currency }}</td>
-          <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ d.tx_hash }}">{{ d.tx_hash }}</td>
+          <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ d.tx_hash }}">{{ d.tx_hash[:20] }}...</td>
           <td><span class="badge {{ d.status }}">{{ d.status.upper() }}</span></td>
           <td>
             {% if d.status == 'pending' %}
@@ -149,5 +179,22 @@ tr:hover td { background: #111; }
     </table>
   </div>
 </div>
+
+{% if active_sale %}
+<script>
+const endsAt = new Date("{{ active_sale.ends_at.isoformat() }}Z");
+function tick() {
+  const now = new Date();
+  const diff = Math.max(0, Math.floor((endsAt - now) / 1000));
+  const m = Math.floor(diff / 60).toString().padStart(2,'0');
+  const s = (diff % 60).toString().padStart(2,'0');
+  const el = document.getElementById('fs-countdown');
+  if (el) el.textContent = diff > 0 ? m + ':' + s + ' remaining' : 'ENDED';
+  if (diff <= 0) clearInterval(timer);
+}
+const timer = setInterval(tick, 1000);
+tick();
+</script>
+{% endif %}
 </body>
 </html>

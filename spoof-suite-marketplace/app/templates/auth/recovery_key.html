@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Save Your Recovery Key</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.card { background: #111; border: 1px solid #ff4444; border-radius: 8px; padding: 36px; width: 100%; max-width: 480px; }
+h2 { color: #ff4444; margin-bottom: 8px; font-size: 1.2rem; }
+.warn { background: #1a0000; border: 1px solid #ff4444; border-radius: 4px; padding: 14px; margin: 16px 0; font-size: 0.82rem; color: #ff8888; line-height: 1.6; }
+.key-box { background: #0a0a0a; border: 2px solid #00ff88; border-radius: 6px; padding: 20px; text-align: center; margin: 20px 0; }
+.key { font-size: 1.5rem; font-weight: bold; color: #00ff88; letter-spacing: 4px; word-break: break-all; }
+.key-label { font-size: 0.75rem; color: #666; margin-bottom: 8px; }
+.tips { font-size: 0.78rem; color: #888; margin: 16px 0; line-height: 1.8; }
+.tips li { margin-left: 16px; }
+button { width: 100%; background: #00ff88; color: #000; border: none; padding: 12px; border-radius: 4px; font-weight: bold; font-size: 0.95rem; cursor: pointer; margin-top: 8px; }
+button:hover { background: #00cc6a; }
+.copy-btn { background: #1a1a1a; color: #00ff88; border: 1px solid #00ff88; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-top: 8px; width: auto; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>⚠️ SAVE YOUR RECOVERY KEY</h2>
+  <div class="warn">
+    This key is shown <strong>ONCE ONLY</strong>. If you lose it, you cannot recover your account. There is no email reset. Store it somewhere safe before continuing.
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">YOUR RECOVERY KEY</div>
+    <div class="key" id="rkey">{{ recovery_key }}</div>
+    <button class="copy-btn" onclick="copyKey()">📋 Copy Key</button>
+  </div>
+
+  <ul class="tips">
+    <li>Write it down on paper and store it safely</li>
+    <li>Save it in a password manager</li>
+    <li>Do NOT share it with anyone</li>
+    <li>You will need it to reset your password</li>
+  </ul>
+
+  <form method="GET" action="{{ url_for('auth.login') }}">
+    <button type="submit">✅ I've saved my key — Continue to Login</button>
+  </form>
+</div>
+<script>
+function copyKey() {
+  const key = document.getElementById('rkey').innerText;
+  navigator.clipboard.writeText(key).then(() => {
+    alert('Recovery key copied to clipboard!');
+  });
+}
+</script>
+</body>
+</html>

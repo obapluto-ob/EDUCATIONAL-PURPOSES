@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, request, redirect, url_fo
 from flask_login import login_required, current_user, logout_user, login_user
 from app.routes.plaid_logs import get_daily_plaid_logs
 from app.routes.fullz import get_daily_fullz
-from app.models import CreditCard, User, get_user_profile
+from app.models import CreditCard, User, get_user_profile, FireSale
 import time
 import json
 import os
@@ -10,6 +10,17 @@ import random
 from datetime import datetime, timedelta
 
 main_bp = Blueprint('main', __name__)
+
+
+@main_bp.context_processor
+def inject_firesale():
+    sale = FireSale.query.filter_by(is_active=True).first()
+    if sale and sale.seconds_remaining <= 0:
+        sale.is_active = False
+        from app.models import db
+        db.session.commit()
+        sale = None
+    return {'active_firesale': sale}
 
 # Advanced caching system
 class PerformanceCache:

@@ -1,21 +1,20 @@
 from functools import wraps
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_required, current_user
-from app.models import db, User, Deposit, Purchase, CreditCard, Notification
+from app.models import db, User, Deposit, Purchase, CreditCard, Notification, FireSale
+from datetime import datetime
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin:
-            flash('Admin access required.', 'danger')
-            return redirect(url_for('main.index'))
+        if not session.get('is_admin'):
+            return redirect(url_for('auth.admin_access'))
         return f(*args, **kwargs)
     return decorated
 
 @admin_bp.route('/')
-@login_required
 @admin_required
 def dashboard():
     users = User.query.order_by(User.id.desc()).all()
@@ -24,16 +23,17 @@ def dashboard():
     pending_deposits = Deposit.query.filter_by(status='pending').count()
     total_users = User.query.count()
     total_cards = CreditCard.query.count()
+    active_sale = FireSale.query.filter_by(is_active=True).first()
     return render_template('admin/dashboard.html',
                            users=users,
                            deposits=deposits,
                            purchases=purchases,
                            pending_deposits=pending_deposits,
                            total_users=total_users,
-                           total_cards=total_cards)
+                           total_cards=total_cards,
+                           active_sale=active_sale)
 
 @admin_bp.route('/deposit/<int:deposit_id>/approve', methods=['POST'])
-@login_required
 @admin_required
 def approve_deposit(deposit_id):
     deposit = Deposit.query.get_or_404(deposit_id)
@@ -50,7 +50,6 @@ def approve_deposit(deposit_id):
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/deposit/<int:deposit_id>/reject', methods=['POST'])
-@login_required
 @admin_required
 def reject_deposit(deposit_id):
     deposit = Deposit.query.get_or_404(deposit_id)
@@ -66,7 +65,6 @@ def reject_deposit(deposit_id):
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/user/<int:user_id>/balance', methods=['POST'])
-@login_required
 @admin_required
 def adjust_balance(user_id):
     user = User.query.get_or_404(user_id)
@@ -77,12 +75,8 @@ def adjust_balance(user_id):
     return redirect(url_for('admin.dashboard'))
 
 @admin_bp.route('/user/<int:user_id>/delete', methods=['POST'])
-@login_required
 @admin_required
 def delete_user(user_id):
-    if user_id == current_user.id:
-        flash('Cannot delete your own account.', 'danger')
-        return redirect(url_for('admin.dashboard'))
     user = User.query.get_or_404(user_id)
     username = user.username
     db.session.delete(user)
@@ -90,13 +84,25 @@ def delete_user(user_id):
     flash(f'User {username} deleted.', 'success')
     return redirect(url_for('admin.dashboard'))
 
-@admin_bp.route('/user/<int:user_id>/make_admin', methods=['POST'])
-@login_required
+
+@admin_bp.route('/firesale/start', methods=['POST'])
 @admin_required
-def make_admin(user_id):
-    user = User.query.get_or_404(user_id)
-    user.is_admin = not user.is_admin
+def start_firesale():
+    # Stop any existing active sale first
+    FireSale.query.filter_by(is_active=True).update({'is_active': False})
+    discount = int(request.form.get('discount', 30))
+    duration = int(request.form.get('duration', 10))
+    sale = FireSale(discount_percent=discount, duration_minutes=duration, started_at=datetime.utcnow(), is_active=True)
+    db.session.add(sale)
     db.session.commit()
-    status = 'granted' if user.is_admin else 'revoked'
-    flash(f'Admin access {status} for {user.username}.', 'success')
+    flash(f'🔥 Fire Sale started! {discount}% off for {duration} minutes.', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+
+@admin_bp.route('/firesale/stop', methods=['POST'])
+@admin_required
+def stop_firesale():
+    FireSale.query.filter_by(is_active=True).update({'is_active': False})
+    db.session.commit()
+    flash('Fire Sale stopped.', 'success')
     return redirect(url_for('admin.dashboard'))

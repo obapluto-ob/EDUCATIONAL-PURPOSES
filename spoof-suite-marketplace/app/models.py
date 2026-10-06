@@ -17,12 +17,32 @@ class User(db.Model, UserMixin):
     security_question = db.Column(db.String(255))
     security_answer = db.Column(db.String(512))
     is_admin = db.Column(db.Boolean, default=False)
+    recovery_key_hash = db.Column(db.String(512))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class FireSale(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    discount_percent = db.Column(db.Integer, nullable=False)
+    duration_minutes = db.Column(db.Integer, nullable=False)
+    started_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_active = db.Column(db.Boolean, default=True)
+
+    @property
+    def ends_at(self):
+        from datetime import timedelta
+        return self.started_at + timedelta(minutes=self.duration_minutes)
+
+    @property
+    def seconds_remaining(self):
+        from datetime import timedelta
+        remaining = (self.ends_at - datetime.utcnow()).total_seconds()
+        return max(0, int(remaining))
 
 
 class Deposit(db.Model):
